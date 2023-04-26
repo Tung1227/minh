@@ -11,8 +11,11 @@ app.use(cors());
 
 //ROUTE
 
-//test db 
-app.use("/auth", require("./routes/route"));
+//authenticator 
+app.use("/auth", require("./routes/authenticator"));
+
+// dashboard 
+app.use("/", require("./routes/dashboard"))
 
 
 app.listen(5000, () =>{
