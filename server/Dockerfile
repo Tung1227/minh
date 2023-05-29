@@ -15,6 +15,8 @@ COPY . .
 
 # Expose port 5000 for the Node.js application
 EXPOSE 5000
+RUN npm install -g prisma
+RUN prisma generate
 
 # Start the Node.js application
 CMD ["npm", "start"]
