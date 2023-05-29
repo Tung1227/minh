@@ -1,0 +1,7 @@
+npx create-nx-workspace@latest
+khởi tạo nx workspace
+npm install -D @nx/react
+nx g @nx/react:application <client-app-name>
+npm install -D @nx/node
+nx g @nx/node:application <server-app-name>
+nx g @nx/react:setup-tailwind --project=<client-app-name>

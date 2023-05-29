@@ -11,8 +11,8 @@ services:
       POSTGRES_PASSWORD: admin
     volumes:
       - local_pgdata:/var/lib/postgresql/data
-    networks:
-      - share_network
+    # networks:
+    #   - share_network
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin4_container
@@ -24,8 +24,8 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     volumes:
       - pgadmin-data:/var/lib/pgadmin
-    networks:
-      - share_network
+    # networks:
+    #   - share_network
   server:
     container_name: server
     build:
@@ -37,8 +37,8 @@ services:
       - /app/node_modules
       - ./server:/app
     restart: always
-    networks:
-      - share_network
+    # networks:
+    #   - share_network
   client:
     stdin_open: true
     build:
@@ -50,11 +50,11 @@ services:
     volumes:
       - /app/node_modules
       - ./client:/app
-    networks:
-      - share_network
+    # networks:
+    #   - share_network
 
 volumes:
   local_pgdata:
   pgadmin-data:
-networks:
-  share_network:
+# networks:
+#   share_network:

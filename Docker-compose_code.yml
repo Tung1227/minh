@@ -1,0 +1,34 @@
+version: "3.9"
+services:
+  server:
+    container_name: server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    restart: always
+    networks:
+      - share_network
+  client:
+    stdin_open: true
+    build:
+      dockerfile: Dockerfile
+      context: ./client
+    container_name: client
+    ports:
+      - 3000:3000
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+    networks:
+      - share_network
+
+volumes:
+  local_pgdata:
+  pgadmin-data:
+networks:
+  share_network:

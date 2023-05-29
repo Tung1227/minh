@@ -1,3 +1,4 @@
+docker stop server
 docker rm --volumes server
 docker image rm webnhatro-server
-docker compose up -d server
+docker compose up server

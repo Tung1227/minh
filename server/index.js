@@ -15,7 +15,7 @@ app.use(cors());
 app.use("/auth", require("./routes/authenticator"));
 
 // dashboard 
-app.use("/", require("./routes/dashboard"))
+app.use("/dashboard", require("./routes/dashboard"));
 
 
 app.listen(5000, () =>{
