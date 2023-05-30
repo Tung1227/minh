@@ -1,21 +1,23 @@
 import React, { Fragment, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Login = ({setAuth}) => {
-    const [inputs , setInputs] = useState({
-        email: "", 
+const Login = () => {
+    const [inputs, setInputs] = useState({
+        email: "",
         password: ""
     })
 
+    const navigate = useNavigate();
     const [isError, setIsError] = useState(false)
 
-    const  {email, password} = {...inputs}
+    const { email, password } = { ...inputs }
     const onChange = e => {
-        setInputs({...inputs, [e.target.name]: e.target.value})
+        setInputs({ ...inputs, [e.target.name]: e.target.value })
     }
 
-    const onSubmitForm = async e =>{
+    const onSubmitForm = async e => {
         e.preventDefault()
-        const params = {email, password}
+        const params = { email, password }
 
         try {
             const respone = await fetch("http://localhost:5000/auth/login", {
@@ -25,11 +27,11 @@ const Login = ({setAuth}) => {
             })
 
             const parseRes = await respone.json()
-
             console.log(parseRes)
-
             localStorage.setItem("token", parseRes.token)
-            setAuth(true)
+            if (localStorage.getItem("token") !== null) {
+                navigate('/dashboard');
+            }
         } catch (error) {
             console.log(error.message)
         }
@@ -39,11 +41,11 @@ const Login = ({setAuth}) => {
             <h1 className="text-center my-5">
                 Login
             </h1>
-            <form>
+            <form onSubmit={onSubmitForm}>
                 <input type="email" name="email" placeholder="email" className="form-control my-3" value={email} onChange={(e) => onChange(e)}></input>
                 <input type="password" name="password" placeholder="" className="form-control my-3" value={password} onChange={(e) => onChange(e)}></input>
-                <button className="btn-success btn btn-block my-3" onClick={(e) => {onSubmitForm(e)}}>Submit</button>
-                {isError &&  <span id="errorMessage"></span>}
+                <button className="btn-success btn btn-block my-3">Submit</button>
+                {isError && <span id="errorMessage"></span>}
             </form>
         </Fragment>
 

@@ -1,35 +1,30 @@
 import React, { Fragment, useEffect, useState } from "react";
 
 
-const Dashboard = ({ setAuth, isAuthenticated }) => {
+const Dashboard = () => {
     const [name, setName] = useState()
-    const getName = async () => {
+
+    useEffect(async () => {
         try {
             const respone = await fetch("http://localhost:5000/dashboard/", {
                 method: "GET",
-                headers: { token: localStorage.token }
+                headers: { token: localStorage.getItem("token") }
             })
-            const parseRes = await respone.json()
-            setName(parseRes.user_name)
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
-    useEffect(() => {
-        getName()
-    },[isAuthenticated])
 
-    const Logout = (e) =>{
-        // e.preventDefault()
-        setAuth(false)
-        localStorage.removeItem("token")
-    }
+            const parseRes = respone.json()
+        } catch (error) {
+
+        }
+
+
+    }, [])
+
     return (
         <Fragment>
-            <h1>
+            <h1 id="name">
                 Dashboard {name}
             </h1>
-            <button className="btn-secondary btn" onClick={(e) => Logout(e)}>Logout</button>
+            <button className="btn-secondary btn" >Logout</button>
         </Fragment>
     )
 }

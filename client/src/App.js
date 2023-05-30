@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, NavLink, Redirect } f
 import Dashboard from './components/Dashboard';
 import Login from './components/Login';
 import Register from './components/Register';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 function App() {
@@ -13,16 +13,20 @@ function App() {
   const setAuth = (Boolean) => {
     setIsAuthenticated(Boolean)
   }
-
+  useEffect(() =>{
+    if(localStorage.getItem("token") !== null){
+      setAuth(true)
+    }
+  },[])
   return (
     <div className="App">
       Hello welcome to webnhatro
       <Router>
         <div className='container'>
           <Routes>
-            <Route exact path='/login' element={!isAuthenticated ? <Login setAuth={setAuth} /> : <Navigate to="/dashboard" /> } />
-            <Route exact path='/register' element={!isAuthenticated ? <Register setAuth={setAuth} /> : <Navigate to="/dashboard" />} />
-            <Route exact path='/dashboard' element={!isAuthenticated ? <Dashboard setAuth={setAuth} isAuthenticated={isAuthenticated}/> : <Navigate to="/login" />} />
+            <Route exact path='/login' element={!isAuthenticated ? <Login /> : <Navigate to="/dashboard" /> } />
+            <Route exact path='/register' element={!isAuthenticated ? <Register /> : <Navigate to="/dashboard" />} />
+            <Route exact path='/dashboard' element={!isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
           </Routes>
         </div>
         <NavLink

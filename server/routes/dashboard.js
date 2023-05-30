@@ -11,7 +11,7 @@ router.get("/", authorize, async (req, res) => {
                 user_id: req.user
             }
         })
-        
+        console.log(user)
         res.json(user)
     } catch (error) {
         console.log(error.message)
