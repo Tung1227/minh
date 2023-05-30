@@ -1,30 +1,43 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 const Dashboard = () => {
+    const navigate = useNavigate();
+    const ref = useRef(null);
     const [name, setName] = useState()
 
-    useEffect(async () => {
+    const getName = async () => {
         try {
             const respone = await fetch("http://localhost:5000/dashboard/", {
                 method: "GET",
                 headers: { token: localStorage.getItem("token") }
             })
-
-            const parseRes = respone.json()
+            const parseRes = await respone.json()
+            console.log(parseRes)
+            setName(parseRes.user_name)
+            const element = ref.current;
+            console.log(element);
+            element.innerHTML  = "Dashboard " + parseRes.user_name
         } catch (error) {
-
+            console.log(error.message)
         }
-
-
+    }
+    useEffect(()=>{
+        getName()
     }, [])
+
+    const Logout = (e) => {
+        e.preventDefault()
+        localStorage.removeItem("token")
+        navigate('/login')
+    }
 
     return (
         <Fragment>
-            <h1 id="name">
-                Dashboard {name}
+            <h1 id="name" ref={ref}>
             </h1>
-            <button className="btn-secondary btn" >Logout</button>
+            <button className="btn-secondary btn" onClick={(e) => Logout(e)} >Logout</button>
         </Fragment>
     )
 }

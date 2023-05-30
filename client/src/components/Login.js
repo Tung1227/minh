@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -6,7 +6,11 @@ const Login = () => {
         email: "",
         password: ""
     })
-
+    useEffect(() =>{
+        if(localStorage.getItem('token') !== null){
+            navigate('/dashboard');
+        }
+    }) 
     const navigate = useNavigate();
     const [isError, setIsError] = useState(false)
 

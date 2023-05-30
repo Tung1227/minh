@@ -13,11 +13,7 @@ function App() {
   const setAuth = (Boolean) => {
     setIsAuthenticated(Boolean)
   }
-  useEffect(() =>{
-    if(localStorage.getItem("token") !== null){
-      setAuth(true)
-    }
-  },[])
+  
   return (
     <div className="App">
       Hello welcome to webnhatro
