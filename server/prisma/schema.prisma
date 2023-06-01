@@ -14,3 +14,64 @@ model users {
   user_email    String @db.VarChar(255)
   user_password String @db.VarChar(255)
 }
+
+model account {
+  user_id       String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_name     String     @db.VarChar(255)
+  user_email    String     @db.VarChar(255)
+  user_password String     @db.VarChar(255)
+  jwt_token     String     @db.VarChar(255)
+  is_verify     String?    @default(dbgenerated("(0)::bit(1)")) @db.Bit(1)
+  account_type  String     @db.VarChar(10)
+  report        report[]
+  userinfo      userinfo[]
+}
+
+model detail_post {
+  id             String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  post_id        String? @db.Uuid
+  title          String  @db.VarChar(255)
+  content        String  @db.VarChar(255)
+  city           String  @db.VarChar(50)
+  district       String  @db.VarChar(50)
+  ward           String  @db.VarChar(50)
+  image_file     String  @db.VarChar(255)
+  price          String  @db.VarChar(255)
+  acreage        String  @db.VarChar(50)
+  air_condition  String? @default(dbgenerated("(0)::bit(1)")) @db.Bit(1)
+  washing        String? @default(dbgenerated("(0)::bit(1)")) @db.Bit(1)
+  electric_price String  @db.VarChar(50)
+  water_price    String  @db.VarChar(50)
+  post           post?   @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_postdetail")
+}
+
+model post {
+  post_id     String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  title       String        @db.VarChar(255)
+  create_on   DateTime?     @db.Timestamp(6)
+  detail_post detail_post[]
+  report      report[]
+}
+
+model report {
+  report_id String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id   String    @db.Uuid
+  content   String    @db.VarChar(255)
+  post_id   String    @db.Uuid
+  create_on DateTime? @db.Timestamp(6)
+  post      post      @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction)
+  account   account   @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model userinfo {
+  info_id        String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  phone_number   String  @db.VarChar(255)
+  first_name     String? @db.VarChar(255)
+  last_name      String? @db.VarChar(255)
+  city           String? @db.VarChar(255)
+  district       String? @db.VarChar(255)
+  street_address String? @db.VarChar(10)
+  avatar_img     String? @db.VarChar(255)
+  user_id        String  @db.Uuid
+  account        account @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
