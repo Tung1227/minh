@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Navigate, NavLink, Redirect } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 
 import Dashboard from './components/Dashboard';
 import Login from './components/Login';
@@ -13,7 +13,21 @@ function App() {
   const setAuth = (Boolean) => {
     setIsAuthenticated(Boolean)
   }
-  
+
+  const isAuth = async () => {
+    const respone = await fetch("http://localhost:5000/auth/is-verify/", {
+      method: 'GET',
+      headers: {token: localStorage.token}
+    })
+
+    const parseRes = await respone.json()
+
+    parseRes === true ? setAuth(true): setAuth(false)
+  }
+  useEffect(() =>{
+    isAuth()
+  })
+
   return (
     <div className="App">
       Hello welcome to webnhatro
@@ -25,12 +39,6 @@ function App() {
             <Route exact path='/dashboard' element={!isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
           </Routes>
         </div>
-        <NavLink
-          to="/login"
-        >Login </NavLink>
-        <NavLink
-          to="/register"
-        >Register</NavLink>
       </Router>
       {/* <Link to="/login">Login</Link>
       <Link to="/register">Register</Link> */}

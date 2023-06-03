@@ -1,4 +1,4 @@
-CREATE DATABASE webnhatro
+-- CREATE DATABASE webnhatro
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 

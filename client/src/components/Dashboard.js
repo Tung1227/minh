@@ -13,17 +13,14 @@ const Dashboard = () => {
                 method: "GET",
                 headers: { token: localStorage.getItem("token") }
             })
+
             const parseRes = await respone.json()
-            console.log(parseRes)
             setName(parseRes.user_name)
-            const element = ref.current;
-            console.log(element);
-            element.innerHTML  = "Dashboard " + parseRes.user_name
         } catch (error) {
             console.log(error.message)
         }
     }
-    useEffect(()=>{
+    useEffect(() => {
         getName()
     }, [])
 
@@ -36,6 +33,7 @@ const Dashboard = () => {
     return (
         <Fragment>
             <h1 id="name" ref={ref}>
+                Dashboard {name}
             </h1>
             <button className="btn-secondary btn" onClick={(e) => Logout(e)} >Logout</button>
         </Fragment>

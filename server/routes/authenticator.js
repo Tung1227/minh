@@ -77,7 +77,6 @@ router.post("/register", validInfo, async (req, res) => {
 
 router.post("/login", validInfo, async (req, res) => {
     try {
-
         // . destructure req.body
         const { email, password } = req.body
 

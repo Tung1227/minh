@@ -11,7 +11,7 @@ app.use(cors());
 
 //ROUTE
 
-//authenticator 
+//authenticator
 app.use("/auth", require("./routes/authenticator"));
 
 // dashboard 
