@@ -1,13 +1,13 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { toast } from "react-toastify"
+import { ToastContainer, toast } from "react-toastify"
 const Login = () => {
     const [inputs, setInputs] = useState({
         email: "",
         password: ""
     })
     useEffect(() => {
-        if (localStorage.getItem('token') !== null) {
+        if (localStorage.getItem('token')) {
             navigate('/dashboard');
         }
     })
@@ -33,7 +33,7 @@ const Login = () => {
             console.log(parseRes.token)
             if (parseRes.token) {
                 localStorage.setItem("token", parseRes.token)
-                // toast.success("Login successfully!!!")
+                toast("Login successfully!!!")
                 navigate('/dashboard');
             }else{
 
@@ -55,6 +55,7 @@ const Login = () => {
             <Link
                 to="/register"
             >Register</Link>
+            <ToastContainer />
         </Fragment>
     )
 }

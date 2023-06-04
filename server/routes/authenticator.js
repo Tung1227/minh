@@ -5,7 +5,8 @@ const jwtGenerator = require("../utils/jwtGenerator")
 const validInfo = require("../middleware/validInfo")
 const authorization = require("../middleware/authorization")
 const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient()
+const prisma = require('../utils/db')
+const sendEmail = require("../utils/email");
 
 //test db
 
@@ -16,7 +17,7 @@ router.post("/register", validInfo, async (req, res) => {
         const { name, email, password } = req.body;
 
         // 2. check if user exist(if user exist then throw error)
-        const user = await prisma.users.findFirst({
+        const user = await prisma.account.findFirst({
             where: {
                 user_email: email
             }
@@ -24,7 +25,7 @@ router.post("/register", validInfo, async (req, res) => {
         // console.log(user)
 
         if (user !== null) {
-            return res.status(401).send({"message": "User already exist!!!"})
+            return res.status(401).send({ "message": "User already exist!!!" })
         }
 
         // 3. Bcrypt user password 
@@ -40,36 +41,32 @@ router.post("/register", validInfo, async (req, res) => {
         // ])
         // 5. generating out jwt token 
         let token;
-        async function main() {
-            const newUser = await prisma.users.create({
-                data: {
-                    user_name: name,
-                    user_email: email,
-                    user_password: bcryptPassword
-                },
-            })
-            console.log(newUser)
-            token = jwtGenerator(newUser.user_id)
-            console.log(1)
-            return token;
-        }
-        main()
-            .then(async (token) => {
-                await prisma.$disconnect()
-                console.log(token)
-                res.json({ token })
-            })
-            .catch(async (e) => {
-                console.error(e)
-                await prisma.$disconnect()
-                process.exit(1)
-            })
-
+        const newUser = await prisma.account.create({
+            data: {
+                user_name: name,
+                user_email: email,
+                user_password: bcryptPassword
+            },
+        })
+        console.log(newUser)
+        token = await jwtGenerator(newUser.user_id)
+        const updateAccount = await prisma.account.update({
+            where: {
+                user_id: newUser.user_id,
+            },
+            data: {
+                jwt_token: token,
+            },
+        })
+        const message = await `${process.env.BASE_URL}/verify/${newUser.user_id}/${updateAccount.jwt_token}`;
+        console.log(updateAccount)
+        console.log(message);
+        sendEmail(newUser.user_email, "Verify Email", message);
+        res.send("An Email sent to your account please verify");
         // 5. generating out jwt token 
-        console.log("a " + 2)
     } catch (error) {
         console.log(error)
-        res.status(500).send({"message":"Server Error"})
+        res.status(500).send({ "message": "Server Error" })
     }
 });
 
@@ -87,12 +84,12 @@ router.post("/login", validInfo, async (req, res) => {
             }
         })
         if (user === null) {
-            return res.status(401).json({"message":"Email or Password is incorrect"})
+            return res.status(401).json({ "message": "Email or Password is incorrect" })
         }
         // 3. check if incoming password is the same the database password 
         const validPassword = await bcrypt.compare(password, user.user_password)
         if (!validPassword) {
-            res.status(401).send({"message":"Email or Password is incorrect"})
+            res.status(401).send({ "message": "Email or Password is incorrect" })
         }
 
         // 4. given them jwt token 
@@ -101,7 +98,7 @@ router.post("/login", validInfo, async (req, res) => {
         res.json({ token })
     } catch (error) {
         console.log(error.message)
-        res.status(500).send({"message":"Server Error"})
+        res.status(500).send({ "message": "Server Error" })
     }
 })
 
@@ -112,8 +109,35 @@ router.get("/is-verify", authorization, async (req, res) => {
         res.json(true)
     } catch (error) {
         console.log(error.message)
-        res.status(500).send({"message":"Server Error"})
+        res.status(500).send({ "message": "Server Error" })
     }
 })
+
+router.get("/verify/:id/:token", async (req, res) => {
+    try {
+        const user = await prisma.account.findFirst({ where: { user_id: req.params.id } });
+        if (!user) return res.status(400).send("Invalid link");
+
+        const token = await prisma.account.findFirst({
+            where: {
+                userId: user.user_id,
+                token: req.params.token,
+            }
+        });
+        if (!token) return res.status(400).send("Invalid link");
+
+        await prisma.account.update({
+            where: { user_id: user.user_id },
+            data: {
+                is_verify: '1'
+            } });
+        await Token.findByIdAndRemove(token._id);
+
+        res.send("email verified sucessfully");
+    } catch (error) {
+        res.status(400).send("An error occured");
+    }
+});
+
 
 module.exports = router;

@@ -34,6 +34,7 @@ function App() {
       <Router>
         <div className='container'>
           <Routes>
+            <Route exact path='/' element={!isAuthenticated ? <Navigate to="/login" /> : <Navigate to="/dashboard" /> } />
             <Route exact path='/login' element={!isAuthenticated ? <Login /> : <Navigate to="/dashboard" /> } />
             <Route exact path='/register' element={!isAuthenticated ? <Register /> : <Navigate to="/dashboard" />} />
             <Route exact path='/dashboard' element={!isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />

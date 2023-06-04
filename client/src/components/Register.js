@@ -27,6 +27,7 @@ const Register = () => {
                 body: JSON.stringify(params)
             })
             const parseRes = await respone.json()
+            console.log(parseRes)
             if (respone.status !== 401) {
                 localStorage.setItem("token", parseRes.token)
             }

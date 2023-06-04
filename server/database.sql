@@ -7,16 +7,16 @@ CREATE TABLE users(
     user_name VARCHAR(255) NOT NULL,
     user_email VARCHAR(255) NOT NULL,
     user_password VARCHAR(255) NOT NULL
-)
+);
 
 CREATE TABLE account(
-    user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id uuid DEFAULT uuid_generate_v4(),
     user_name VARCHAR(255) NOT NULL,
-    user_email VARCHAR(255) NOT NULL,
+    user_email VARCHAR(255) PRIMARY KEY ,
     user_password VARCHAR(255) NOT NULL,
-    jwt_token VARCHAR(255) NOT NULL,
+    jwt_token VARCHAR(255) ,
     is_verify bit DEFAULT 0::bit,
-    account_type VARCHAR(10) NOT NULL
+    account_type VARCHAR(10) DEFAULT 'user'
 );
 
 CREATE TABLE userInfo(
@@ -37,7 +37,10 @@ CREATE TABLE userInfo(
 CREATE TABLE post(
     post_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     title VARCHAR(255) NOT NULL,
-    create_on TIMESTAMP
+    create_on TIMESTAMP,
+    user_id uuid NOT NULL,
+    FOREIGN KEY(user_id) 
+	  	REFERENCES account(user_id)
 );
 
 CREATE TABLE detail_post(

@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Dashboard = () => {
@@ -13,8 +14,8 @@ const Dashboard = () => {
                 method: "GET",
                 headers: { token: localStorage.getItem("token") }
             })
-
             const parseRes = await respone.json()
+            console.log(parseRes)
             setName(parseRes.user_name)
         } catch (error) {
             console.log(error.message)

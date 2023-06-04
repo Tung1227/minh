@@ -20,9 +20,10 @@ model account {
   user_name     String     @db.VarChar(255)
   user_email    String     @db.VarChar(255)
   user_password String     @db.VarChar(255)
-  jwt_token     String     @db.VarChar(255)
+  jwt_token     String?    @db.VarChar(255)
   is_verify     String?    @default(dbgenerated("(0)::bit(1)")) @db.Bit(1)
-  account_type  String     @db.VarChar(10)
+  account_type  String?    @default("user") @db.VarChar(10)
+  post          post[]
   report        report[]
   userinfo      userinfo[]
 }
@@ -49,7 +50,9 @@ model post {
   post_id     String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   title       String        @db.VarChar(255)
   create_on   DateTime?     @db.Timestamp(6)
+  user_id     String        @db.Uuid
   detail_post detail_post[]
+  account     account       @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
   report      report[]
 }
 
