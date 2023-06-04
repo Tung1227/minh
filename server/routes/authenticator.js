@@ -58,7 +58,7 @@ router.post("/register", validInfo, async (req, res) => {
                 jwt_token: token,
             },
         })
-        const message = await `${process.env.BASE_URL}/verify/${newUser.user_id}/${updateAccount.jwt_token}`;
+        const message = await `${process.env.BASE_URL}/verify?userId=${newUser.user_id}&token=${updateAccount.jwt_token}`;
         console.log(updateAccount)
         console.log(message);
         sendEmail(newUser.user_email, "Verify Email", message);
