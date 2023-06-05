@@ -25,9 +25,9 @@ function App() {
 
     parseRes === true ? setAuth(true): setAuth(false)
   }
-  useEffect(() =>{
-    isAuth()
-  })
+  // useEffect(() =>{
+  //   isAuth()
+  // })
 
   return (
     <div className="App">
@@ -38,7 +38,7 @@ function App() {
             <Route exact path='/login' element={!isAuthenticated ? <Login /> : <Navigate to="/dashboard" /> } />
             <Route exact path='/register' element={!isAuthenticated ? <Register /> : <Navigate to="/dashboard" />} />
             <Route exact path='/dashboard' element={!isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
-            <Route exact path='/verify/:userId/:token' element={ <Verify/> } />
+            <Route path='/verify' element={ <Verify/> } />
           </Routes>
         </div>
       </Router>
