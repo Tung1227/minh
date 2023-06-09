@@ -10,12 +10,12 @@ CREATE TABLE users(
 );
 
 CREATE TABLE account(
-    user_id uuid DEFAULT uuid_generate_v4(),
+    user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_name VARCHAR(255) NOT NULL,
-    user_email VARCHAR(255) PRIMARY KEY ,
+    user_email VARCHAR(255) NOT NULL ,
     user_password VARCHAR(255) NOT NULL,
     jwt_token VARCHAR(255) ,
-    is_verify bit DEFAULT 0::bit,
+    is_verify boolean DEFAULT 'false',
     account_type VARCHAR(10) DEFAULT 'user'
 );
 
@@ -54,8 +54,8 @@ CREATE TABLE detail_post(
     image_file VARCHAR(255) NOT NULL,
     price VARCHAR(255) NOT NULL,
     acreage VARCHAR(50) NOT NULL,
-    air_condition bit DEFAULT 0::bit,
-    washing bit DEFAULT 0::bit,
+    air_condition boolean DEFAULT 'false',
+    washing boolean DEFAULT 'false',
     electric_price VARCHAR(50) NOT NULL,
     water_price VARCHAR(50) NOT NULL,
     CONSTRAINT fk_postdetail

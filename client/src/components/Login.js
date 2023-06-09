@@ -1,27 +1,35 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify"
 const Login = () => {
     const [inputs, setInputs] = useState({
         email: "",
         password: ""
     })
-    useEffect(() => {
-        if (localStorage.getItem('token')) {
-            navigate('/dashboard');
-        }
-    })
     const navigate = useNavigate();
+
+    const isVerify = async () =>{
+        const respone = await fetch("http://localhost:5000/auth/is-verify/", {
+            method: 'GET',
+            headers: { token: localStorage.token }
+        })
+
+        const parseRes = await respone.json()
+        console.log(parseRes)
+        parseRes === true ? navigate('/dashboard') : navigate('/login')
+    }
+    useEffect( () => {
+        isVerify()
+    }, []);
 
     const { email, password } = { ...inputs }
     const onChange = e => {
-        setInputs({...inputs, [e.target.name]: e.target.value })
+        setInputs({ ...inputs, [e.target.name]: e.target.value })
     }
 
     const onSubmitForm = async e => {
         e.preventDefault()
-        const params = {  ...inputs }
-
+        const params = { ...inputs }
+        console.log(params)
         try {
             const respone = await fetch("http://localhost:5000/auth/login", {
                 method: "post",
@@ -30,12 +38,10 @@ const Login = () => {
             })
             const parseRes = await respone.json()
             console.log(parseRes)
-            console.log(parseRes.token)
             if (parseRes.token) {
                 localStorage.setItem("token", parseRes.token)
-                toast("Login successfully!!!")
                 navigate('/dashboard');
-            }else{
+            } else {
 
             }
         } catch (error) {
@@ -55,7 +61,6 @@ const Login = () => {
             <Link
                 to="/register"
             >Register</Link>
-            <ToastContainer />
         </Fragment>
     )
 }

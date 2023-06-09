@@ -5,7 +5,10 @@ import Dashboard from './components/Dashboard';
 import Login from './components/Login';
 import Register from './components/Register';
 import { useEffect, useState } from 'react';
-import Verify from './components/verify/verify';
+import Verify from './components/verify/Verify';
+import Listroom from './components/pages/CreatePost';
+import Listpost from './components/pages/Listpost';
+
 
 
 function App() {
@@ -15,30 +18,18 @@ function App() {
     setIsAuthenticated(Boolean)
   }
 
-  const isAuth = async () => {
-    const respone = await fetch("http://localhost:5000/auth/is-verify/", {
-      method: 'GET',
-      headers: {token: localStorage.token}
-    })
-
-    const parseRes = await respone.json()
-
-    parseRes === true ? setAuth(true): setAuth(false)
-  }
-  // useEffect(() =>{
-  //   isAuth()
-  // })
-
   return (
     <div className="App">
       <Router>
         <div className='container'>
           <Routes>
-            <Route exact path='/' element={!isAuthenticated ? <Navigate to="/login" /> : <Navigate to="/dashboard" /> } />
-            <Route exact path='/login' element={!isAuthenticated ? <Login /> : <Navigate to="/dashboard" /> } />
-            <Route exact path='/register' element={!isAuthenticated ? <Register /> : <Navigate to="/dashboard" />} />
-            <Route exact path='/dashboard' element={!isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
-            <Route path='/verify' element={ <Verify/> } />
+            <Route path='/' element={<Navigate to="/login" />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/verify' element={<Verify />} />
+            <Route path='/createpost' element={<Listroom/>} />
+            <Route path='/listpost' element={<Listpost/>} />
           </Routes>
         </div>
       </Router>

@@ -1,12 +1,11 @@
 const router = require("express").Router();
 const authorize = require("../middleware/authorization")
-const pool = require("../db")
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient()
 
 router.get("/", authorize, async (req, res) => {
     try {
-        const user = await prisma.users.findFirst({
+        const user = await prisma.account.findFirst({
             where:{
                 user_id: req.user
             }

@@ -1,12 +1,11 @@
-import React, { Fragment, useEffect, useState, useRef } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import 'react-toastify/dist/ReactToastify.css';
 
 
 const Dashboard = () => {
     const navigate = useNavigate();
-    const ref = useRef(null);
-    const [name, setName] = useState()
+    const [name, setName] = useState("");
+
 
     const getName = async () => {
         try {
@@ -21,22 +20,31 @@ const Dashboard = () => {
             console.log(error.message)
         }
     }
-    useEffect(() => {
-        getName()
-    }, [])
+    const isVerify = async () =>{
+        const respone = await fetch("http://localhost:5000/auth/is-verify/", {
+            method: 'GET',
+            headers: { token: localStorage.token }
+        })
+
+        const parseRes = await respone.json()
+        console.log(parseRes)
+        parseRes === true ? getName() : navigate('/login')
+    }
+    useEffect( () => {
+        isVerify()
+    }, []);
 
     const Logout = (e) => {
-        e.preventDefault()
         localStorage.removeItem("token")
         navigate('/login')
     }
 
     return (
         <Fragment>
-            <h1 id="name" ref={ref}>
+            <h1 id="name" >
                 Dashboard {name}
             </h1>
-            <button className="btn-secondary btn" onClick={(e) => Logout(e)} >Logout</button>
+            <button className="btn-secondary btn" onClick={() => Logout()} >Logout</button>
         </Fragment>
     )
 }
