@@ -20,7 +20,7 @@ const Verify = () => {
             })
             const parseRes = await respone.json()
             console.log(parseRes)
-            if(respone.status == 202){
+            if(respone.status === 202){
                 localStorage.setItem('token', token)
                 window.location.href = '/dashboard'
             }

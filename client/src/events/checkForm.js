@@ -22,13 +22,9 @@ export default function chekForm(input) {
   const rePassword = document.querySelector("#rePassword");
 
   //check re-password
-  let rePassValue;
   if (input.password !== input.rePassword) {
     rePassword.classList.add("warning");
   } else if (input.password === input.rePassword) {
     rePassword.classList.remove("warning");
   }
-  console.log('E' + email.value)
-  console.log('P' + input.password)
-  console.log('R' + input.rePassword)
 }

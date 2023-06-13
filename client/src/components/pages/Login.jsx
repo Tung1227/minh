@@ -7,7 +7,8 @@ export default function LoginPage() {
 
   const [inputs, setInputs] = useState({
     email: "",
-    password: ""
+    password: "",
+    saveToken: false
   })
 
   const [noti, setNoti] = useState(false)
@@ -28,9 +29,14 @@ export default function LoginPage() {
     isVerify()
   }, []);
 
-  const { email, password } = { ...inputs }
+  const { email, password, saveToken } = { ...inputs }
   const onChange = e => {
-    setInputs({ ...inputs, [e.target.name]: e.target.value })
+    if (e.target.type == 'checkbox') {
+      setInputs({ ...inputs, [e.target.name]: e.target.checked })
+    }
+    else {
+      setInputs({ ...inputs, [e.target.name]: e.target.value })
+    }
   }
 
   const onSubmitForm = async e => {
@@ -46,7 +52,9 @@ export default function LoginPage() {
       const parseRes = await respone.json()
       console.log(parseRes)
       if (parseRes.token) {
-        localStorage.setItem("token", parseRes.token)
+        if(saveToken){
+          localStorage.setItem("token", parseRes.token)
+        }
         window.location.href = '/dashboard'
       } else {
         setNoti(true)
@@ -64,28 +72,28 @@ export default function LoginPage() {
   return (
     <Fragment>
 
-      <div className="form-login flex flex-col justify-center items-center h-screen bg-gray-50 dark:bg-gray-900 ">
+      <div className="form-login flex flex-col justify-center items-center h-screen bg-gray-50  ">
         {/* start logo form */}
         <div className="form-logo">
           <a
             href="#"
-            className="flex justify-center items-center text-2xl font-medium text-gray-900 dark:text-white"
+            className="flex justify-center items-center text-2xl font-medium text-gray-900 "
           >
             <img src={logo} className="h-16 w-16 object-cover" alt="ảnh" />
           </a>
         </div>
         {/* end logo-form */}
         {/* start form-container */}
-        <div className="form-container w-full max-w-xs bg-white shadow  dark:bg-gray-800 dark:border-gray-700 rounded">
+        <div className="form-container w-full max-w-xs bg-white shadow rounded">
           <div className="p-6 space-y-4">
-            <h1 className="text-gray-800 text-xl text-center font-bold leading-tight tracking-tight dark:text-white">
+            <h1 className="text-gray-800 text-xl text-center font-bold leading-tight tracking-tight ">
               Đăng Nhập
             </h1>
             <form action="#" className="flex flex-col" onSubmit={onSubmitForm}>
-              <div className="form-email">
+              <div className="form-email text-left">
                 <label
                   htmlFor="email"
-                  className="block text-gray-800 dark:text-white mb-2 text-sm font-medium"
+                  className="block text-gray-800  mb-2 text-sm font-medium"
                 >
                   Email của Bạn
                 </label>
@@ -93,16 +101,16 @@ export default function LoginPage() {
                   value={email}
                   onChange={e => onChange(e)}
                   type="email"
-                  className="w-full mb-4 p-2.5 rounded-lg border text-gray-800 bg-gray-50 border-gray-300 dark:text-white dark:bg-gray-600  focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full mb-4 p-2.5 rounded-lg border text-gray-800 bg-gray-50 border-gray-300  focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
                   placeholder="name@company.com"
                   name="email"
                   id="email"
                 />
               </div>
-              <div className="form-password">
+              <div className="form-password text-left">
                 <label
                   htmlFor="email"
-                  className="block text-gray-800 dark:text-white mb-2 text-sm font-medium"
+                  className="block text-gray-800  mb-2 text-sm font-medium"
                 >
                   Mật Khẩu
                 </label>
@@ -110,16 +118,19 @@ export default function LoginPage() {
                   value={password}
                   onChange={e => onChange(e)}
                   type="password"
-                  className="w-full mb-4 p-2.5 rounded-lg border text-gray-800 bg-gray-50 border-gray-300 dark:text-white dark:bg-gray-600  focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full mb-4 p-2.5 rounded-lg border text-gray-800 bg-gray-50 border-gray-300  focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
                   placeholder="••••••••"
                   name="password"
                   id="password"
                 />
               </div>
-              <div className="flex justify-between items-center text-gray-800 dark:text-white my-3">
+              <div className="flex justify-between items-center text-gray-800  my-3">
                 <div className="flex">
                   <div className="h-5">
                     <input
+                      checked={saveToken}
+                      onChange={e => onChange(e)}
+                      name="saveToken"
                       id="remember"
                       type="checkbox"
                       aria-describedby="remember"
@@ -148,7 +159,7 @@ export default function LoginPage() {
               >
                 Đăng Nhập
               </button>
-              <p className="text-gray-800 dark:text-white mt-3 font-normal text-sm">
+              <p className="text-gray-800  mt-3 font-normal text-sm">
                 Bạn Chưa Có Tài Khoản?
                 <a href="/signup" className="ml-1 text-blue-500 ">
                   Đăng ký

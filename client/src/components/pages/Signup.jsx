@@ -64,12 +64,12 @@ export default function Signup() {
 
   return (
     <Fragment>
-      <div className="form-login flex flex-col justify-center items-center h-screen bg-gray-50 dark:bg-gray-900 ">
+      <div className="form-login flex flex-col justify-center items-center h-screen bg-gray-50 ">
         {/* start logo form */}
         <div className="form-logo">
           <a
             href="#"
-            className="flex justify-center items-center text-2xl font-medium text-gray-900 dark:text-white"
+            className="flex justify-center items-center text-2xl font-medium text-gray-900"
           >
             <img src={logo} className="h-16 w-16 object-cover" alt="ảnh" />
           </a>
@@ -78,14 +78,14 @@ export default function Signup() {
         {/* start form-container */}
         <div className="form-container w-full max-w-xs bg-white shadow  dark:bg-gray-800 dark:border-gray-700 rounded">
           <div className="p-6 space-y-4">
-            <h1 className="text-gray-800 text-xl text-center font-bold leading-tight tracking-tight dark:text-white">
+            <h1 className="text-gray-800 text-xl text-center font-bold leading-tight tracking-tight ">
               Đăng Ký
             </h1>
             <form action="#" className="flex flex-col" onSubmit={onSubmitForm}>
               <div className="form-email">
                 <label
                   htmlFor="name"
-                  className="block text-gray-800 dark:text-white mb-2 text-sm font-medium text-left"
+                  className="block text-gray-800 mb-2 text-sm font-medium text-left"
                 >
                   Tên của Bạn
                 </label>
@@ -94,7 +94,7 @@ export default function Signup() {
                   value={name}
                   onChange={e => onChange(e)}
                   type="name"
-                  className="w-full mb-4 p-2.5 rounded-lg border text-gray-800 bg-gray-50 border-gray-300 dark:text-white dark:bg-gray-600  focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full mb-4 p-2.5 rounded-lg border text-gray-800 bg-gray-50 border-gray-300 focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
                   name="name"
                   id="name"
                 />
@@ -102,7 +102,7 @@ export default function Signup() {
               <div className="form-email">
                 <label
                   htmlFor="email"
-                  className="block text-gray-800 dark:text-white mb-2 text-sm font-medium text-left"
+                  className="block text-gray-800 mb-2 text-sm font-medium text-left"
                 >
                   Email của Bạn
                 </label>
@@ -110,7 +110,7 @@ export default function Signup() {
                   value={email}
                   onChange={e => onChange(e)}
                   type="email"
-                  className="w-full mb-4 p-2.5 rounded-lg border text-gray-800 bg-gray-50 border-gray-300 dark:text-white dark:bg-gray-600  focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full mb-4 p-2.5 rounded-lg border text-gray-800 bg-gray-50 border-gray-300 focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
                   placeholder="name@company.com"
                   name="email"
                   id="email"
@@ -119,7 +119,7 @@ export default function Signup() {
               <div className="form-password">
                 <label
                   htmlFor="password"
-                  className="block text-gray-800 dark:text-white mb-2 text-sm font-medium text-left"
+                  className="block text-gray-800 mb-2 text-sm font-medium text-left"
                 >
                   Mật Khẩu
                 </label>
@@ -127,7 +127,7 @@ export default function Signup() {
                   value={password}
                   onChange={e => onChange(e)}
                   type="password"
-                  className="w-full mb-4 p-2.5 rounded-lg border text-gray-800 bg-gray-50 border-gray-300 dark:text-white dark:bg-gray-600  focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full mb-4 p-2.5 rounded-lg border text-gray-800 bg-gray-50 border-gray-300 focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
                   placeholder="••••••••"
                   name="password"
                   id="password"
@@ -136,7 +136,7 @@ export default function Signup() {
               <div className="form-password">
                 <label
                   htmlFor="re-password"
-                  className="block text-gray-800 dark:text-white mb-2 text-sm font-medium text-left"
+                  className="block text-gray-800 mb-2 text-sm font-medium text-left"
                 >
                   Nhập Lại Mật Khẩu
                 </label>
@@ -144,7 +144,7 @@ export default function Signup() {
                   value={rePassword}
                   onChange={e => onChange(e)}
                   type="password"
-                  className="w-full mb-4 p-2.5 rounded-lg border text-gray-800 bg-gray-50 border-gray-300 dark:text-white dark:bg-gray-600  focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full mb-4 p-2.5 rounded-lg border text-gray-800 bg-gray-50 border-gray-300 focus:outline-none  focus:ring-blue-500 focus:border-blue-500"
                   placeholder="••••••••"
                   name="rePassword"
                   id="rePassword"
@@ -157,7 +157,7 @@ export default function Signup() {
               >
                 Đăng Ký
               </button>
-              <p className="text-gray-800 dark:text-white mt-3 font-normal text-sm">
+              <p className="text-gray-800 mt-3 font-normal text-sm">
                 Bạn Đã Có Tài Khoản?
                 <a href="/login" className="ml-1 text-blue-500 ">
                   Đăng nhập

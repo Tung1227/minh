@@ -134,5 +134,24 @@ router.post("/verify", async (req, res) => {
     }
 });
 
+router.post("/repassword", async (req, res) => {
+    try {
+        const { user_id, jwt_token } = req.body
+        const user = await prisma.account.findFirst({ where: { user_id: user_id } });
+        if (!user) return res.status(400).send({ "message": "Invalid link" });
+        if (user.jwt_token != jwt_token) return res.status(400).send({ "message": "Invalid link" });
+
+        await prisma.account.update({
+            where: { user_id: user.user_id },
+            data: {
+                is_verify: true
+            }
+        });
+        res.status(202).send({ "message": "email verified sucessfully" });
+    } catch (error) {
+        res.status(400).send({ "message": "An error occured" });
+    }
+});
+
 
 module.exports = router;
