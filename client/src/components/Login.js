@@ -59,8 +59,8 @@ const Login = () => {
                 <button className="btn-success btn btn-block my-3">Submit</button>
             </form>
             <Link
-                to="/register"
-            >Register</Link>
+                to="/signup"
+            >Đăng ký</Link>
         </Fragment>
     )
 }

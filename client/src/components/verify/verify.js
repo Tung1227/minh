@@ -4,9 +4,11 @@ import React, { Fragment, useEffect } from "react";
 const Verify = () => {
     const paramString = window.location.search
     const params = new URLSearchParams(paramString)
+    const user_id = params.get('userId')
+    const token = params.get('token')
     const data = {
-        user_id: params.get('userId'),
-        jwt_token: params.get('token')
+        user_id: user_id,
+        jwt_token: token
     }
     console.log(data)
     const verifing = async () => {
@@ -18,6 +20,10 @@ const Verify = () => {
             })
             const parseRes = await respone.json()
             console.log(parseRes)
+            if(respone.status == 202){
+                localStorage.setItem('token', token)
+                window.location.href = '/dashboard'
+            }
             
         } catch (error) {
             console.log(error.message)

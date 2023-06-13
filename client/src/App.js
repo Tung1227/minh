@@ -2,8 +2,8 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 
 import Dashboard from './components/Dashboard';
-import Login from './components/Login';
-import Register from './components/Register';
+import Login from './components/pages/Login';
+import Signup from './components/pages/Signup';
 import { useEffect, useState } from 'react';
 import Verify from './components/verify/Verify';
 import Listroom from './components/pages/CreatePost';
@@ -23,9 +23,9 @@ function App() {
       <Router>
         <div className='container'>
           <Routes>
-            <Route path='/' element={<Navigate to="/login" />} />
+            <Route path='' element={<Navigate to="/login" />} />
             <Route path='/login' element={<Login />} />
-            <Route path='/register' element={<Register />} />
+            <Route path='/signup' element={<Signup />} />
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/verify' element={<Verify />} />
             <Route path='/createpost' element={<Listroom/>} />
@@ -34,7 +34,7 @@ function App() {
         </div>
       </Router>
       {/* <Link to="/login">Login</Link>
-      <Link to="/register">Register</Link> */}
+      <Link to="/Signup">Signup</Link> */}
     </div>
   );
 }

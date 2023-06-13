@@ -13,7 +13,7 @@ router.post("/register", validInfo, async (req, res) => {
 
         // 1. destructure the req.body(name, email, password)
         const { name, email, password } = req.body;
-
+        console.log(![email, name, password].every(Boolean))
         // 2. check if user exist(if user exist then throw error)
         const user = await prisma.account.findFirst({
             where: {
@@ -46,7 +46,7 @@ router.post("/register", validInfo, async (req, res) => {
                 user_password: bcryptPassword
             },
         })
-        console.log(newUser)
+        console.log(newUser.user_id)
         token = await jwtGenerator(newUser.user_id)
         const updateAccount = await prisma.account.update({
             where: {
@@ -57,10 +57,9 @@ router.post("/register", validInfo, async (req, res) => {
             },
         })
         const message = await `${process.env.BASE_URL}/verify?userId=${newUser.user_id}&token=${updateAccount.jwt_token}`;
-        console.log(updateAccount)
-        console.log(message);
+        console.log(message)
         sendEmail(newUser.user_email, "Verify Email", message);
-        res.send("An Email sent to your account please verify");
+        res.send({ "message": "An Email sent to your account please verify" });
         // 5. generating out jwt token 
     } catch (error) {
         console.log(error)
@@ -86,7 +85,7 @@ router.post("/login", validInfo, async (req, res) => {
         if (user === null) {
             return res.status(401).json({ "message": "Email or Password is incorrect" })
         }
-        if(user.is_verify == false){
+        if (user.is_verify == false) {
             return res.status(401).json({ "message": "Please verify your email" })
         }
         // 3. check if incoming password is the same the database password 
@@ -119,22 +118,19 @@ router.get("/is-verify", authorization, async (req, res) => {
 router.post("/verify", async (req, res) => {
     try {
         const { user_id, jwt_token } = req.body
-        console.log(user_id, jwt_token)
         const user = await prisma.account.findFirst({ where: { user_id: user_id } });
-        if (!user) return res.status(400).send({"message":"Invalid link"});
-        console.log(user)
-        if (user.jwt_token != jwt_token) return res.status(400).send({"message":"Invalid link"});
+        if (!user) return res.status(400).send({ "message": "Invalid link" });
+        if (user.jwt_token != jwt_token) return res.status(400).send({ "message": "Invalid link" });
 
-        const updated = await prisma.account.update({
+        await prisma.account.update({
             where: { user_id: user.user_id },
             data: {
                 is_verify: true
             }
         });
-        console.log(updated)
-        res.status(202).send({"message":"email verified sucessfully"});
+        res.status(202).send({ "message": "email verified sucessfully" });
     } catch (error) {
-        res.status(400).send({"message":"An error occured"});
+        res.status(400).send({ "message": "An error occured" });
     }
 });
 

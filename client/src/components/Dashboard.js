@@ -1,9 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
 
 const Dashboard = () => {
-    const navigate = useNavigate();
     const [name, setName] = useState("");
 
 
@@ -28,7 +25,7 @@ const Dashboard = () => {
 
         const parseRes = await respone.json()
         console.log(parseRes)
-        parseRes === true ? getName() : navigate('/login')
+        parseRes === true ? getName() : window.location.href = '/login'
     }
     useEffect( () => {
         isVerify()
@@ -36,7 +33,7 @@ const Dashboard = () => {
 
     const Logout = (e) => {
         localStorage.removeItem("token")
-        navigate('/login')
+        window.location.href = '/login'
     }
 
     return (
