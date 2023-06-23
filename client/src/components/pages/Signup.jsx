@@ -1,7 +1,7 @@
 import logo from "../../img/logo/logo.png";
 import checkForm from "../../events/checkForm";
 import React, { useEffect, useState, Fragment } from "react";
-import Toast from "../notify/toast";
+import Toast from "../notify/Toast";
 
 export default function Signup() {
   const [inputs, setInputs] = useState({
@@ -14,21 +14,22 @@ export default function Signup() {
   const [noti, setNoti] = useState(false)
   const [notiMessage, setNotiMessage] = useState("")
 
-  const { email, name, password, rePassword } = {...inputs}
+  const { email, name, password, rePassword } = { ...inputs }
 
   const onChange = (e) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value })
   }
-  useEffect(()=>{
+  useEffect(() => {
     checkForm(inputs)
-  },[inputs])
+  }, [inputs])
 
   const onSubmitForm = async e => {
     e.preventDefault()
     const params = { email, name, password }
     checkForm(inputs)
     try {
-      const respone = await fetch("http://localhost:5000/auth/register", {
+      const url = await `${process.env.REACT_APP_API_URL}/auth/register`
+      const respone = await fetch(url, {
         method: "post",
         headers: { "content-Type": "application/json" }
         ,
@@ -37,19 +38,15 @@ export default function Signup() {
       const parseRes = await respone.json()
       console.log(parseRes)
       if (respone.status !== 401) {
-        setNoti(true)
+        setNoti('green')
         setNotiMessage(parseRes.message)
       }
       else {
-        setNoti(true)
+        setNoti('red')
         setTimeout(() => {
-          console.log("turn off noti")
-          setNoti(false)
+          setNoti('')
         }, 3000);
         setNotiMessage(parseRes.message)
-      }
-      if (localStorage.getItem("token") !== null) {
-        window.location.href = '/dashboard'
       }
     } catch (error) {
       console.log(error.message)

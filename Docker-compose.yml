@@ -26,32 +26,39 @@ services:
       - pgadmin-data:/var/lib/pgadmin
     # networks:
     #   - share_network
-  server:
-    container_name: server
+  # server:
+  #   container_name: server
+  #   build:
+  #     context: ./server
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 5000:5000
+  #   volumes:
+  #     - /app/node_modules
+  #     - ./server:/app
+  #   restart: always
+  #   # networks:
+  #   #   - share_network
+  # client:
+  #   stdin_open: true
+  #   build:
+  #     dockerfile: Dockerfile
+  #     context: ./client
+  #   container_name: client
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - /app/node_modules
+  #     - ./client:/app
+  #   # networks:
+  #   #   - share_network
+  chatbot:
     build:
-      context: ./server
       dockerfile: Dockerfile
+      context: ./chatbot
+    container_name: chatbot
     ports:
-      - 5000:5000
-    volumes:
-      - /app/node_modules
-      - ./server:/app
-    restart: always
-    # networks:
-    #   - share_network
-  client:
-    stdin_open: true
-    build:
-      dockerfile: Dockerfile
-      context: ./client
-    container_name: client
-    ports:
-      - 3000:3000
-    volumes:
-      - /app/node_modules
-      - ./client:/app
-    # networks:
-    #   - share_network
+      - 3200:3200
 
 volumes:
   local_pgdata:

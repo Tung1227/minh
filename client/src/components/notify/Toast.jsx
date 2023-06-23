@@ -1,23 +1,33 @@
+import React, { Fragment, useEffect } from "react"
 
-import React, {Fragment, useEffect} from "react"
-
-const Toast = (props) => {
-    const {showed, message} = {...props}
+export default function Toast(props) {
+    const { showed, message } = { ...props }
     const notiRef = React.createRef()
-    useEffect(() =>{
-        if(showed){
-            const el = notiRef.current;
-            el.classList.remove("hidden")
-        }else{
-            const el = notiRef.current;
-            el.classList.add("hidden")
+    useEffect(() => {
+        const noti = notiRef.current;
+        if (showed == 'red') {
+            noti.classList.remove("hidden")
+            noti.classList.remove("bg-green-50")
+            noti.classList.remove("text-green-800")
+            noti.classList.add("bg-red-50")
+            noti.classList.add("text-red-800")
+
+        } else if (showed == 'green') {
+            noti.classList.remove("hidden")
+            noti.classList.remove("bg-red-50")
+            noti.classList.remove("text-red-800")
+            noti.classList.add("bg-green-50")
+            noti.classList.add("text-green-800")
+
+        } else {
+            noti.classList.add("hidden")
         }
-    },[showed])
+    }, [showed])
     return (
         <Fragment>
             <div
                 id="warning" ref={notiRef}
-                className="absolute top-5 right-5 flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 hidden"
+                className="absolute top-5 right-5 flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50  hidden"
                 role="alert"
             >
                 <svg
@@ -43,5 +53,3 @@ const Toast = (props) => {
         </Fragment>
     )
 }
-
-export default Toast

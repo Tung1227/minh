@@ -16,6 +16,15 @@ router.get("/", authorize, async (req, res) => {
         console.log(error.message)
         res.status(500).send({"message":"Server Error"})
     }
+});
+
+router.get("/text", async (req, res) => {
+    try {
+        res.json({"message": "ok"})
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).send({"message":"Server Error"})
+    }
 })
 
 module.exports = router;

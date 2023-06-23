@@ -1,7 +1,7 @@
 import logo from "../../img/logo/logo.png";
 import checkForm from "../../events/checkForm";
 import React, { Fragment, useEffect, useState } from "react";
-import Toast from "../notify/toast";
+import Toast from "../notify/Toast";
 
 export default function LoginPage() {
 
@@ -11,19 +11,19 @@ export default function LoginPage() {
     saveToken: false
   })
 
-  const [noti, setNoti] = useState(false)
+  const [noti, setNoti] = useState(true)
   const [notiMessage, setNotiMessage] = useState("")
 
 
   const isVerify = async () => {
-    const respone = await fetch("http://localhost:5000/auth/is-verify/", {
+    const url = await `${process.env.REACT_APP_API_URL}/auth/is-verify`
+    const respone = await fetch(url, {
       method: 'GET',
       headers: { token: localStorage.token }
     })
-
     const parseRes = await respone.json()
     console.log(parseRes)
-    if (parseRes === true) { window.location.href = '/dashboard' }
+    if (!parseRes.message) { window.location.href = '/dashboard' }
   }
   useEffect(() => {
     isVerify()
@@ -39,31 +39,31 @@ export default function LoginPage() {
     }
   }
 
+  let timeout = null
   const onSubmitForm = async e => {
     e.preventDefault()
     const params = { ...inputs }
-    console.log(params)
     try {
-      const respone = await fetch("http://localhost:5000/auth/login", {
+      setNoti('')
+      const url = await `${process.env.REACT_APP_API_URL}/auth/login`
+      const respone = await fetch(url, {
         method: "post",
         headers: { "content-Type": "application/json" },
         body: JSON.stringify(params)
       })
       const parseRes = await respone.json()
-      console.log(parseRes)
       if (parseRes.token) {
-        if(saveToken){
-          localStorage.setItem("token", parseRes.token)
-        }
+        localStorage.setItem("token", parseRes.token)
         window.location.href = '/dashboard'
       } else {
-        setNoti(true)
-        setTimeout(() => {
-          console.log("turn off noti")
-          setNoti(false)
-        }, 3000);
+        clearTimeout(timeout)
+        setNoti('red')
         setNotiMessage(parseRes.message)
+        timeout = setTimeout(() => {
+          setNoti('')
+        }, 3000)
       }
+
     } catch (error) {
       console.log(error.message)
     }
@@ -149,7 +149,7 @@ export default function LoginPage() {
                     <label htmlFor="remember">Lưu Thông Tin</label>
                   </div>
                 </div>
-                <a href="#" className="text-blue-500">
+                <a href="/inputmail" className="text-blue-500">
                   Quên Mật Khẩu?
                 </a>
               </div>
@@ -169,7 +169,7 @@ export default function LoginPage() {
           </div>
         </div>
         {/* end form-container */}
-        <Toast showed={noti} message={notiMessage} />
+        {noti && <Toast showed={noti} message={notiMessage} setNoti={setNoti} />}
       </div>
     </Fragment>
   );

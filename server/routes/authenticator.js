@@ -73,7 +73,6 @@ router.post("/login", validInfo, async (req, res) => {
     try {
         // . destructure req.body
         const { email, password } = req.body
-        console.log(email, password)
 
         // 2. check if user doesn't exist (if not exist throw error)
         const user = await prisma.account.findFirst({
@@ -91,16 +90,16 @@ router.post("/login", validInfo, async (req, res) => {
         // 3. check if incoming password is the same the database password 
         const validPassword = await bcrypt.compare(password, user.user_password)
         if (!validPassword) {
-            res.status(401).send({ "message": "Email or Password is incorrect" })
+            return res.status(401).json({ "message": "Email or Password is incorrect" })
         }
 
         // 4. given them jwt token 
 
         const token = jwtGenerator(user.user_id)
-        res.json({ token })
+        return res.json({ token })
     } catch (error) {
         console.log(error.message)
-        res.status(500).send({ "message": "Server Error" })
+        return res.status(500).send({ "message": "Server Error" })
     }
 })
 
@@ -108,7 +107,22 @@ router.post("/login", validInfo, async (req, res) => {
 
 router.get("/is-verify", authorization, async (req, res) => {
     try {
-        res.status(200).json(true)
+        const user = await prisma.account.findFirst({
+            where: {
+                user_id: req.user
+            },
+            select: {
+                userinfo: {
+                    select: {
+                        avatar_img: true
+                    }
+                },
+                user_name: true,
+                user_id: true,
+                account_type: true
+            }
+        })
+        return res.json(user)
     } catch (error) {
         console.log(error.message)
         res.status(500).send({ "message": "Server Error" })
@@ -128,30 +142,110 @@ router.post("/verify", async (req, res) => {
                 is_verify: true
             }
         });
-        res.status(202).send({ "message": "email verified sucessfully" });
-    } catch (error) {
-        res.status(400).send({ "message": "An error occured" });
-    }
-});
 
-router.post("/repassword", async (req, res) => {
-    try {
-        const { user_id, jwt_token } = req.body
-        const user = await prisma.account.findFirst({ where: { user_id: user_id } });
-        if (!user) return res.status(400).send({ "message": "Invalid link" });
-        if (user.jwt_token != jwt_token) return res.status(400).send({ "message": "Invalid link" });
-
-        await prisma.account.update({
-            where: { user_id: user.user_id },
-            data: {
-                is_verify: true
+        await prisma.userinfo.create({
+            data:{
+                user_id: user.user_id,
+                avatar_img: 'Sample_User_Icon.png'
             }
-        });
-        res.status(202).send({ "message": "email verified sucessfully" });
+        })
+        return res.status(202).send({ "message": "email verified sucessfully" });
     } catch (error) {
-        res.status(400).send({ "message": "An error occured" });
+        console.log(error.message)
+        return res.status(400).send({ "message": "An error occured" });
     }
 });
+
+router.post("/newpassword", async (req, res) => {
+    try {
+        const { user_id, password } = req.body
+        console.log(user_id, password)
+        const user = await prisma.account.findFirst({
+            where: {
+                user_id: user_id
+            }
+        })
+        if (!user) {
+            return res.status(403).json({ "message": "Người dùng không tồn tại" });
+        } else {
+            const validPassword = await bcrypt.compare(password, user.user_password)
+            if (validPassword) {
+                return res.status(409).json({ "message": "Không sử dùng lại mật khẩu cũ" }).end;
+            } else {
+                const saltRound = 10;
+                const salt = await bcrypt.genSalt(saltRound)
+                const bcryptPassword = await bcrypt.hash(password, salt);
+                console.log(bcryptPassword)
+                await prisma.account.update({
+                    where: { user_id: user_id },
+                    data: {
+                        user_password: bcryptPassword
+                    }
+                });
+                console.log(user)
+                return res.status(202).json({ "message": "Đã đổi mật khẩu mới" });
+            }
+        }
+    } catch (error) {
+        console.log(error.message)
+        return res.status(400).send({ "message": "Có lỗi xảy ra" });
+    }
+});
+
+router.post("/changepassword", async (req, res) => {
+    try {
+        const { user_id, oldPassword, newPassword } = req.body
+        const user = await prisma.account.findFirst({
+            where: {
+                user_id: user_id
+            }
+        })
+        if (!user) {
+            return res.status(403).json({ "message": "Người dùng không tồn tại" });
+        } else {
+            const validPassword = await bcrypt.compare(oldPassword, user.user_password)
+            if (!validPassword) {
+                return res.status(403).json({ "message": "Mật khẩu cũ không đúng" });
+            }
+            const saltRound = 10;
+            const salt = await bcrypt.genSalt(saltRound)
+            const bcryptPassword = await bcrypt.hash(newPassword, salt);
+            console.log(bcryptPassword)
+            await prisma.account.update({
+                where: { user_id: user_id },
+                data: {
+                    user_password: bcryptPassword
+                }
+            });
+            console.log(user)
+            return res.status(202).json({ "message": "Đổi mật khẩu thành công" });
+        }
+    } catch (error) {
+        console.log(error.message)
+        return res.status(400).send({ "message": "Có lỗi xảy ra" });
+    }
+});
+
+router.post("/getmail", async (req, res) => {
+    try {
+        const { mail } = req.body
+        const user = await prisma.account.findFirst({
+            where: {
+                user_email: mail
+            }
+        })
+        if (!user) {
+            return res.status(403).json({ "message": "Email không tồn tại" });
+        } else {
+            const message = await `${process.env.BASE_URL}/newPass?userId=${user.user_id}`;
+            sendEmail(user.user_email, "Mật khẩu mới", message);
+            res.status(202).send({ "message": "Thư đổi mật khẩu đã được gửi đến bạn" });
+        }
+    } catch (error) {
+        console.log(error.message)
+        return res.status(400).send({ "message": "Có lỗi xảy ra" });
+    }
+})
 
 
 module.exports = router;

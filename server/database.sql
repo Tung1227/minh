@@ -21,7 +21,7 @@ CREATE TABLE account(
 
 CREATE TABLE userInfo(
     info_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    phone_number VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(255),
     first_name VARCHAR(255) ,
     last_name VARCHAR(255) ,
     city VARCHAR(255) ,
@@ -51,9 +51,10 @@ CREATE TABLE detail_post(
     city VARCHAR(50) NOT NULL,
     district VARCHAR(50) NOT NULL,
     ward VARCHAR(50) NOT NULL,
-    image_file VARCHAR(255) NOT NULL,
+    acreage VARCHAR(255),
+    image_file text NOT NULL,
     price VARCHAR(255) NOT NULL,
-    acreage VARCHAR(50) NOT NULL,
+    acreage VARCHAR(50),
     air_condition boolean DEFAULT 'false',
     washing boolean DEFAULT 'false',
     electric_price VARCHAR(50) NOT NULL,
@@ -74,3 +75,7 @@ CREATE TABLE report(
     FOREIGN KEY(post_id) 
 	  	REFERENCES post(post_id)
 );
+
+--  https://github.com/ThangLeQuoc/vietnamese-provinces-database/blob/master/postgresql/CreateTables_vn_units.sql 
+-- Việt Nam table unit
+

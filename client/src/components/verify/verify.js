@@ -13,7 +13,8 @@ const Verify = () => {
     console.log(data)
     const verifing = async () => {
         try {
-            const respone = await fetch("http://localhost:5000/auth/verify", {
+            const url = await `${process.env.REACT_APP_API_URL}/auth/verify`
+            const respone = await fetch(url, {
                 method: 'post',
                 headers: { "content-Type": "application/json" },
                 body: JSON.stringify(data)
