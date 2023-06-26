@@ -59,9 +59,9 @@ export default function ListPost(props) {
   }, [props.from]);
 
   const onClick = (post) => {
-    props.setPagearr(['detail'])
+    props.setPagearr(['Chi tiết'])
     getPost(post).then(() => {
-      props.setPage('detail')
+      props.setPage('Chi tiết')
     })
   }
 

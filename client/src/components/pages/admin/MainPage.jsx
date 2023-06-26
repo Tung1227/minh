@@ -148,7 +148,7 @@ export default function MainPage() {
                 {(page == 'post' || page == 'update') && < ListPost from={from} page={page} setPostDetail={setPostDetail} setPage={setPage} pagearr={pagearr} setPagearr={setPagearr} />}
                 {(page == 'report') && < ListReport page={page} setPostDetail={setPostDetail} setPage={setPage} pagearr={pagearr} setPagearr={setPagearr} />}
             </div>}
-            {(page == 'detail') && <PostDetail from={from} post={postDetail} setPost={setPostDetail} logined={logined} userinfo={userinfo} setPage={setPage} mainPage={mainPage} />}
+            {(page == 'Chi tiết') && <PostDetail from={from} post={postDetail} setPost={setPostDetail} logined={logined} userinfo={userinfo} setPage={setPage} mainPage={mainPage} />}
         </Fragment>
     )
 }

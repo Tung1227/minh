@@ -1,8 +1,29 @@
-import { Fragment, useEffect, useState } from "react";
-// import postDetail from "./postDetail";
+import { Fragment, useEffect, useMemo, useState } from "react";
+import Pagination from "../pagination/Pagination";
+
+
+let PageSize = 3
 
 export default function Listpost(props) {
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [data, setData] = useState([]);
     const posts = props.posts
+
+
+
+    // const currentTableData = (() => {
+    //     const firstPageIndex = (currentPage - 1) * PageSize;
+    //     const lastPageIndex = firstPageIndex + PageSize;
+    //     setData(posts.slice(firstPageIndex, lastPageIndex))
+    //     return posts.slice(firstPageIndex, lastPageIndex);
+    // }, [currentPage]);
+
+    useEffect(() => {
+        const firstPageIndex = (currentPage - 1) * PageSize;
+        const lastPageIndex = firstPageIndex + PageSize;
+        setData(posts.slice(firstPageIndex, lastPageIndex))
+    }, [posts,currentPage])
 
     const getAllPost = async () => {
         const url = await `${process.env.REACT_APP_API_URL}/post/allpost`
@@ -38,18 +59,18 @@ export default function Listpost(props) {
     }, []);
 
     const onClick = (post) => {
-        props.setPagearr(['detail'])
+        props.setPagearr(['Chi tiết'])
         getPost(post).then(() => {
-            props.setPage('detail')
+            props.setPage('Chi tiết')
         })
     }
     return (
         <Fragment>
-            <div className="bg-white">
+            <div className="bg-white text-center">
                 <div className="mx-auto max-w-2xl px-4 py-4 md:px-6 md:py-23 lg:max-w-7xl lg:px-8">
                     <h2 className="sr-only">Post</h2>
                     <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-                        {posts.map((post) => (
+                        {data.map((post) => (
                             <a key={post.post_id} id={post.post_id} className="group" onClick={() => { onClick(post.post_id) }}>
                                 <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
                                     <img
@@ -67,6 +88,13 @@ export default function Listpost(props) {
                     </div>
                 </div>
             </div>
+            <Pagination
+                className="pagination-bar"
+                currentPage={currentPage}
+                totalCount={posts.length}
+                pageSize={PageSize}
+                onPageChange={page => setCurrentPage(page)}
+            />
         </Fragment>
     )
 }

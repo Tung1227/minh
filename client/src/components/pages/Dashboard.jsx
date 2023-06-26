@@ -30,7 +30,7 @@ export default function Dashboard() {
     const [wards, setWards] = useState([])
     const [postDetail, setPostDetail] = useState({})
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
-    const [pagearr, setPagearr] = useState([''])
+    const [pagearr, setPagearr] = useState([])
     const [from, setFrom] = useState('')
 
 
@@ -44,7 +44,6 @@ export default function Dashboard() {
             })
 
             const parseRes = await respone.json()
-            console.log(parseRes.account_type)
             if (!parseRes.message) {
                 setUserInfo(parseRes)
                 if (parseRes.account_type == 'admin') {
@@ -161,9 +160,9 @@ export default function Dashboard() {
             {(page == 'list') && <FillterModal fillterModal={fillterModal} setFillterModal={setFillterModal} cities={cities} districts={districts}
                 wards={wards} setCities={setCities} setDistricts={setDistricts} setWards={setWards} setPosts={setPosts} />}
             {(page == 'list') && <Listpost posts={posts} setPosts={setPosts} setPage={setPage} setPostDetail={setPostDetail} setPagearr={setPagearr} />}
-            {(page == 'detail') && <PostDetail setPage={setPage} mainPage={mainPage} setNoti={setNoti} setNotiMessage={setNotiMessage} post={postDetail} setPost={setPostDetail} logined={logined} userinfo={userinfo} />}
-            {(page == 'create') && <CreatePost setNoti={setNoti} setNotiMessage={setNotiMessage} cities={cities} districts={districts} wards={wards} setCities={setCities} setDistricts={setDistricts} setWards={setWards} />}
-            {(page == 'profile') && <Profile setNoti={setNoti} setNotiMessage={setNotiMessage} cities={cities} districts={districts} wards={wards} setCities={setCities} setDistricts={setDistricts} setWards={setWards} />}
+            {(page == 'Chi tiết') && <PostDetail setPage={setPage} mainPage={mainPage} setNoti={setNoti} setNotiMessage={setNotiMessage} post={postDetail} setPost={setPostDetail} logined={logined} userinfo={userinfo} />}
+            {(page == 'Tạo tin mới') && <CreatePost setNoti={setNoti} setNotiMessage={setNotiMessage} cities={cities} districts={districts} wards={wards} setCities={setCities} setDistricts={setDistricts} setWards={setWards} />}
+            {(page == 'Thông tin cá nhân') && <Profile setNoti={setNoti} setNotiMessage={setNotiMessage} cities={cities} districts={districts} wards={wards} setCities={setCities} setDistricts={setDistricts} setWards={setWards} />}
             {(page == 'Tin đã đăng' && <Listposted posts={posts} setPosts={setPosts} setPage={setPage} setPostDetail={setPostDetail} setPagearr={setPagearr} />)}
             {(page == 'Chỉnh sửa bài đăng') && <UpdatePost setNoti={setNoti} setNotiMessage={setNotiMessage} post={postDetail} setPost={setPostDetail} cities={cities} districts={districts} wards={wards} setCities={setCities} setDistricts={setDistricts} setWards={setWards} />}
             {noti && <Toast showed={noti} message={notiMessage} setNoti={setNoti} />}

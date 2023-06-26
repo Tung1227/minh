@@ -23,8 +23,8 @@ export default function NavBar(props) {
   }
 
   const changePage = () => {
-    props.setPagearr(['create'])
-    props.setPage('create')
+    props.setPagearr(['Tạo tin mới'])
+    props.setPage('Tạo tin mới')
   }
   useEffect(() => {
     setUserInfo(user)
@@ -35,8 +35,8 @@ export default function NavBar(props) {
   }
 
   const Profile = (e) => {
-    props.setPage('profile')
-    props.setPagearr(['profile'])
+    props.setPage('Thông tin cá nhân')
+    props.setPagearr(['Thông tin cá nhân'])
   }
 
   const listpost = (e) => {

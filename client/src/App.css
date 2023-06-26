@@ -32,13 +32,16 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
 input[type="file"] {
   display: none;
 }
+
 .custom-file-upload {
   border: 1px solid #ccc;
   display: inline-block;
@@ -46,9 +49,10 @@ input[type="file"] {
   cursor: pointer;
 }
 
-.warning{
+.warning {
   border-color: red !important;
 }
+
 .field-icon {
   float: right;
   margin-left: -25px;
@@ -57,6 +61,7 @@ input[type="file"] {
   z-index: 2;
 }
 
-#rcw-conversation-container{
+#rcw-conversation-container {
   width: 200px;
 }
+
