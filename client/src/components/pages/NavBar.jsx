@@ -16,29 +16,40 @@ function classNames(...classes) {
 export default function NavBar(props) {
   const navigate = useNavigate()
   const [userInfo, setUserInfo] = useState()
-  const {logined, user} = {...props}
+  const { logined, user } = { ...props }
   const onClick = (e) => {
     // e.preventDefault();
     props.setFillterModal(true);
   }
 
   const changePage = () => {
+    props.setPagearr(['create'])
     props.setPage('create')
   }
-  useEffect(()=>{
+  useEffect(() => {
     setUserInfo(user)
-    console.log(user)
   }, [user])
   const Logout = (e) => {
     localStorage.removeItem("token")
     window.location.href = '/login'
   }
 
+  const Profile = (e) => {
+    props.setPage('profile')
+    props.setPagearr(['profile'])
+  }
+
+  const listpost = (e) => {
+    props.setPage('Tin đã đăng')
+    props.setPagearr(['Tin đã đăng'])
+    props.setFrom('Tin đã đăng')
+  }
+
   const changePass = () => {
     navigate('/repass', { state: userInfo.user_id })
-}
+  }
   return (
-    <Disclosure as="nav" className="bg-slate-300" style={{backgroundColor: 'rgb(203 213 225)'}}>
+    <Disclosure as="nav" className="bg-slate-300" style={{ backgroundColor: 'rgb(203 213 225)' }}>
       {(open) =>
       (
         <>
@@ -99,7 +110,7 @@ export default function NavBar(props) {
                   }}
                 >
                   <span className="sr-only">View notifications</span>
-                  {(props.page == 'list')&&<FunnelIcon className="h-6 w-6" aria-hidden="true" style={{color:"black"}}/>}
+                  {(props.page == 'list') && <FunnelIcon className="h-6 w-6" aria-hidden="true" style={{ color: "black" }} />}
                 </button>
 
                 {/* Profile dropdown */}
@@ -126,13 +137,29 @@ export default function NavBar(props) {
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <Menu.Item>
                         {({ active }) => (
-                          <a
+                          <a onClick={(e) => {
+                            Profile(e)
+                          }}
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            Your Profile
+                            Thông tin cá nhân
+                          </a>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a onClick={(e) => {
+                            listpost(e)
+                          }}
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700"
+                            )}
+                          >
+                            Tin đã đăng
                           </a>
                         )}
                       </Menu.Item>

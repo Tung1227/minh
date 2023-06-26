@@ -123,7 +123,7 @@ export default function ReportModal(props) {
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
                     onClick={(e) => { onSubmitForm(e) }}
                   >
-                    Search
+                    Report
                   </button>
                   <button
                     type="button"

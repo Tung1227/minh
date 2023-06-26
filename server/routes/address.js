@@ -1,6 +1,4 @@
 const router = require("express").Router();
-const bcrypt = require("bcryptjs")
-const authorization = require("../middleware/authorization")
 const prisma = require('../utils/db')
 
 router.get("/city", async (req, res) => {
@@ -9,10 +7,10 @@ router.get("/city", async (req, res) => {
             code: true,
             name: true
         },
-        orderBy:{
+        orderBy: {
             name: 'asc',
         }
-    
+
     })
     return res.json(city)
 });
@@ -29,7 +27,7 @@ router.post("/district", async (req, res) => {
                     code: true,
                     name: true
                 },
-                orderBy:{
+                orderBy: {
                     name: 'asc',
                 }
             }
@@ -49,7 +47,7 @@ router.post("/ward", async (req, res) => {
                     code: true,
                     name: true
                 },
-                orderBy:{
+                orderBy: {
                     name: 'asc',
                 }
             }

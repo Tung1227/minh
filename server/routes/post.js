@@ -78,7 +78,7 @@ router.get("/allpost", async (req, res) => {
                 title: true
             },
             where: {
-                status: 'posted'
+                status: 'accepted',
             }
         })
 
@@ -229,15 +229,18 @@ router.post("/postdetail", async (req, res) => {
         },
         select: {
             name: true,
+            code: true,
             districts: {
                 where: {
                     code: post.detail_post[0].district
                 },
                 select: {
                     name: true,
+                    code: true,
                     wards: {
                         select: {
                             name: true,
+                            code: true
                         },
                         where: {
                             code: post.detail_post[0].ward

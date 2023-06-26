@@ -76,9 +76,10 @@ model userinfo {
   last_name      String? @db.VarChar(255)
   city           String? @db.VarChar(255)
   district       String? @db.VarChar(255)
-  street_address String? @db.VarChar(10)
-  avatar_img     String? @db.VarChar(255)
+  street_address String?
+  avatar_img     String?
   user_id        String  @db.Uuid
+  ward           String? @db.VarChar(255)
   account        account @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 }
 

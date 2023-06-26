@@ -10,8 +10,12 @@ import Toast from "../notify/Toast";
 import { Widget, addResponseMessage, addLinkSnippet, addUserMessage, setQuickButtons } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
 import { useCookies } from "react-cookie";
+import Profile from "./Profile";
+import Listposted from "./Listposted";
+import UpdatePost from "./UpdatePost";
 
 const buttons = [{ label: 'first', value: '1' }, { label: 'second', value: '2' }];
+const mainPage = 'list'
 
 export default function Dashboard() {
     const [fillterModal, setFillterModal] = useState(false);
@@ -26,6 +30,8 @@ export default function Dashboard() {
     const [wards, setWards] = useState([])
     const [postDetail, setPostDetail] = useState({})
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
+    const [pagearr, setPagearr] = useState([''])
+    const [from, setFrom] = useState('')
 
 
 
@@ -56,10 +62,7 @@ export default function Dashboard() {
             setLogined(true)
         }
     }, [userinfo]);
-    // useEffect(() => {
-    //     // console.log(userinfo)
-    //    console.log(page)
-    // }, [page]);
+
 
     useEffect(() => {
         isVerify()
@@ -151,15 +154,18 @@ export default function Dashboard() {
     };
     return (
         <Fragment>
-            <NavBar setFillterModal={setFillterModal} logined={logined} user={userinfo} setPage={setPage} page={page} />
+            <NavBar setFillterModal={setFillterModal} logined={logined} user={userinfo} setPage={setPage} page={page} setPagearr={setPagearr} setFrom={setFrom} />
             <div className="text-left">
-                <Breadcrumbs page={page} setPage={setPage} />
+                <Breadcrumbs page={page} setPage={setPage} mainPage={mainPage} pagearr={pagearr} setPagearr={setPagearr} from={from} />
             </div>
             {(page == 'list') && <FillterModal fillterModal={fillterModal} setFillterModal={setFillterModal} cities={cities} districts={districts}
                 wards={wards} setCities={setCities} setDistricts={setDistricts} setWards={setWards} setPosts={setPosts} />}
-            {(page == 'list') && <Listpost posts={posts} setPosts={setPosts} setPage={setPage} setPostDetail={setPostDetail} />}
-            {(page == 'detail') && <PostDetail setNoti={setNoti} setNotiMessage={setNotiMessage} post={postDetail} setPost={setPostDetail} logined={logined} />}
+            {(page == 'list') && <Listpost posts={posts} setPosts={setPosts} setPage={setPage} setPostDetail={setPostDetail} setPagearr={setPagearr} />}
+            {(page == 'detail') && <PostDetail setPage={setPage} mainPage={mainPage} setNoti={setNoti} setNotiMessage={setNotiMessage} post={postDetail} setPost={setPostDetail} logined={logined} userinfo={userinfo} />}
             {(page == 'create') && <CreatePost setNoti={setNoti} setNotiMessage={setNotiMessage} cities={cities} districts={districts} wards={wards} setCities={setCities} setDistricts={setDistricts} setWards={setWards} />}
+            {(page == 'profile') && <Profile setNoti={setNoti} setNotiMessage={setNotiMessage} cities={cities} districts={districts} wards={wards} setCities={setCities} setDistricts={setDistricts} setWards={setWards} />}
+            {(page == 'Tin đã đăng' && <Listposted posts={posts} setPosts={setPosts} setPage={setPage} setPostDetail={setPostDetail} setPagearr={setPagearr} />)}
+            {(page == 'Chỉnh sửa bài đăng') && <UpdatePost setNoti={setNoti} setNotiMessage={setNotiMessage} post={postDetail} setPost={setPostDetail} cities={cities} districts={districts} wards={wards} setCities={setCities} setDistricts={setDistricts} setWards={setWards} />}
             {noti && <Toast showed={noti} message={notiMessage} setNoti={setNoti} />}
             <div>
                 {(page == 'list') && <Widget resizable={true} style={{ width: '200px', }}

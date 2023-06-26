@@ -22,8 +22,15 @@ export default function LoginPage() {
       headers: { token: localStorage.token }
     })
     const parseRes = await respone.json()
-    console.log(parseRes)
-    if (!parseRes.message) { window.location.href = '/dashboard' }
+    if (!parseRes.message) {
+      if (parseRes.account_type == 'admin') {
+        window.location.href = '/admin'
+      }
+      else if (parseRes.account_type == 'user') {
+        window.location.href = '/dashboard'
+
+      }
+    }
   }
   useEffect(() => {
     isVerify()
@@ -54,7 +61,7 @@ export default function LoginPage() {
       const parseRes = await respone.json()
       if (parseRes.token) {
         localStorage.setItem("token", parseRes.token)
-        window.location.href = '/dashboard'
+        isVerify()
       } else {
         clearTimeout(timeout)
         setNoti('red')

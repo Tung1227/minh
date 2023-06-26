@@ -3,23 +3,6 @@ import { Fragment, useEffect, useState } from "react";
 
 export default function Listpost(props) {
     const posts = props.posts
-    const [fillterModal, setFillterModal] = useState(false);
-    const [logined, setLogined] = useState(false);
-    const [userinfo, setUserInfo] = useState()
-    const [page, setPage] = useState('list')
-
-    const isVerify = async () => {
-        const url = await `${process.env.REACT_APP_API_URL}/auth/is-verify`
-        const respone = await fetch(url, {
-            method: 'GET',
-            headers: { token: localStorage.token }
-        })
-
-        const parseRes = await respone.json()
-        if (!parseRes.message) {
-            setUserInfo(parseRes)
-        }
-    }
 
     const getAllPost = async () => {
         const url = await `${process.env.REACT_APP_API_URL}/post/allpost`
@@ -31,12 +14,6 @@ export default function Listpost(props) {
         const parseRes = await respone.json()
         props.setPosts(parseRes.result)
     }
-
-    useEffect(() => {
-        if (userinfo != undefined) {
-            setLogined(true)
-        }
-    }, [userinfo]);
 
     const getPost = async (post) => {
         try {
@@ -57,14 +34,11 @@ export default function Listpost(props) {
         }
     }
     useEffect(() => {
-        isVerify()
         getAllPost()
     }, []);
 
-
-    useEffect(() => {
-    }, [fillterModal])
     const onClick = (post) => {
+        props.setPagearr(['detail'])
         getPost(post).then(() => {
             props.setPage('detail')
         })

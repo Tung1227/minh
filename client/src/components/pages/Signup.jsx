@@ -53,11 +53,27 @@ export default function Signup() {
     }
   }
 
-  useEffect(() => {
-    if (localStorage.getItem('token') !== null) {
-      window.location.href = '/dashboard'
+  const isVerify = async () => {
+    const url = await `${process.env.REACT_APP_API_URL}/auth/is-verify`
+    const respone = await fetch(url, {
+      method: 'GET',
+      headers: { token: localStorage.token }
+    })
+    const parseRes = await respone.json()
+    if (!parseRes.message) {
+      if (parseRes.account_type == 'admin') {
+        window.location.href = '/admin'
+      }
+      else if (parseRes.account_type == 'user') {
+        window.location.href = '/dashboard'
+
+      }
     }
-  })
+  }
+  useEffect(() => {
+    isVerify()
+  }, []);
+
 
   return (
     <Fragment>

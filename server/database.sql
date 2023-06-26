@@ -26,6 +26,7 @@ CREATE TABLE userInfo(
     last_name VARCHAR(255) ,
     city VARCHAR(255) ,
     district VARCHAR(255) ,
+    ward VARCHAR(255) ,
     street_address VARCHAR(10) ,
     avatar_img VARCHAR(255),
     user_id uuid NOT NULL,

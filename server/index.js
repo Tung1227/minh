@@ -27,6 +27,7 @@ app.use("/post", require("./routes/post"));
 app.use("/user", require("./routes/user"));
 app.use("/address", require("./routes/address"));
 app.use("/chatbot", require("./routes/chatbot"));
+app.use("/admin", require("./routes/admin"));
 
 app.use("/media",express.static("public"));
 
