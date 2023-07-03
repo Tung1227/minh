@@ -23,7 +23,7 @@ router.get("/text", async (req, res) => {
         res.json({"message": "ok"})
     } catch (error) {
         console.log(error.message)
-        res.status(500).send({"message":"Server Error"})
+        res.status(500).send({"message":"Lỗi"})
     }
 })
 

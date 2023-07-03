@@ -46,38 +46,46 @@ export default function MainPage() {
                     setUserInfo(parseRes)
                 }
                 else {
-                    window.location.href = '/dashboard'
+                    window.location.href = "/"
                 }
             } else {
                 window.location.href = '/login'
             }
         } catch (error) {
-            console.log(error.message);
         }
     }
 
     useEffect(() => {
         isVerify()
-        setPage('post')
-        postRef.current.style.backgroundColor = 'turquoise'
     }, []);
 
     useEffect(() => {
-        const elements = document.getElementsByClassName('tab')
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].style.backgroundColor = "unset";
-        }
-        if (page == 'post') {
-            setFrom('post')
+        console.log(userinfo)
+        if (userinfo) {
+            setPage('post')
             postRef.current.style.backgroundColor = 'turquoise'
         }
-        else if (page == 'report') {
-            setFrom('report')
-            reportRef.current.style.backgroundColor = 'turquoise'
-        }
-        else if (page == 'update') {
-            setFrom('update')
-            updateRef.current.style.backgroundColor = 'turquoise'
+    }, [userinfo]);
+
+
+    useEffect(() => {
+        if (userinfo) {
+            const elements = document.getElementsByClassName('tab')
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].style.backgroundColor = "unset";
+            }
+            if (page == 'post') {
+                setFrom('post')
+                postRef.current.style.backgroundColor = 'turquoise'
+            }
+            else if (page == 'report') {
+                setFrom('report')
+                reportRef.current.style.backgroundColor = 'turquoise'
+            }
+            else if (page == 'update') {
+                setFrom('update')
+                updateRef.current.style.backgroundColor = 'turquoise'
+            }
         }
     }, [page]);
 
@@ -99,13 +107,13 @@ export default function MainPage() {
 
 
     return (
-        <Fragment>
+        userinfo && <Fragment>
             <NavBar setFillterModal={setFillterModal} logined={logined} user={userinfo} setPage={setPage} page={page} />
             <div className="text-left">
                 <Breadcrumbs page={page} setPage={setPage} mainPage={mainPage} pagearr={pagearr} setPagearr={setPagearr} from={from} />
             </div>
-            {(page != 'detail') && <div className="container">
-                <div className="" style={{width:'600px'}}>
+            {(page != 'Chi tiết') && <div className="container">
+                <div className="" style={{ width: '600px' }}>
                     <div className="relative right-0">
                         <ul
                             className="relative flex list-none flex-wrap rounded-lg bg-blue-gray-50/60 p-1"

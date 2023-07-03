@@ -98,9 +98,7 @@ export default function Dashboard() {
             console.log(error.message);
         }
     }
-    // useEffect(() => {
-    //     searchPost()
-    // }, [cookies])
+
     const handleNewUserMessage = async (newMessage) => {
         console.log(`New message incoming! ${newMessage}`);
         const params = { text: newMessage }
@@ -119,12 +117,12 @@ export default function Dashboard() {
             }
             else {
                 addResponseMessage('Đang tìm kiếm...');
-                setCookie('price', parseRes.res.Price, { path: '/dashboard', expires: 0 });
-                setCookie('water_price', parseRes.res.Water, { path: '/dashboard', expires: 0 });
-                setCookie('electric_price', parseRes.res.Elec, { path: '/dashboard', expires: 0 });
-                setCookie('air_condition', parseRes.res.Air_condition, { path: '/dashboard', expires: 0 });
-                setCookie('washing', parseRes.res.Washing, { path: '/dashboard', expires: 0 });
-                setCookie('location', parseRes.res.Location, { path: '/dashboard', expires: 0 });
+                setCookie('price', parseRes.res.Price, { path: "/", expires: 0 });
+                setCookie('water_price', parseRes.res.Water, { path: "/", expires: 0 });
+                setCookie('electric_price', parseRes.res.Elec, { path: "/", expires: 0 });
+                setCookie('air_condition', parseRes.res.Air_condition, { path: "/", expires: 0 });
+                setCookie('washing', parseRes.res.Washing, { path: "/", expires: 0 });
+                setCookie('location', parseRes.res.Location, { path: "/", expires: 0 });
                 const params = {
                     'price': parseRes.res.Price,
                     'water_price': parseRes.res.Water,
@@ -154,18 +152,20 @@ export default function Dashboard() {
     return (
         <Fragment>
             <NavBar setFillterModal={setFillterModal} logined={logined} user={userinfo} setPage={setPage} page={page} setPagearr={setPagearr} setFrom={setFrom} />
-            <div className="text-left">
-                <Breadcrumbs page={page} setPage={setPage} mainPage={mainPage} pagearr={pagearr} setPagearr={setPagearr} from={from} />
+            <div className="container text-left pl-10">
+                <Breadcrumbs page={page} setPage={setPage} mainPage={mainPage} pagearr={pagearr} setPagearr={setPagearr} from={from} setFrom={setFrom} />
             </div>
-            {(page == 'list') && <FillterModal fillterModal={fillterModal} setFillterModal={setFillterModal} cities={cities} districts={districts}
+            <div style={{minHeight: '836px'}}>
+            {(page == 'list') && <FillterModal setNoti={setNoti} setNotiMessage={setNotiMessage} fillterModal={fillterModal} setFillterModal={setFillterModal} cities={cities} districts={districts}
                 wards={wards} setCities={setCities} setDistricts={setDistricts} setWards={setWards} setPosts={setPosts} />}
-            {(page == 'list') && <Listpost posts={posts} setPosts={setPosts} setPage={setPage} setPostDetail={setPostDetail} setPagearr={setPagearr} />}
+            {(page == 'list') && <Listpost setNoti={setNoti} setNotiMessage={setNotiMessage} posts={posts} setPosts={setPosts} setPage={setPage} setPostDetail={setPostDetail} setPagearr={setPagearr} setFrom={setFrom} from={from} />}
             {(page == 'Chi tiết') && <PostDetail setPage={setPage} mainPage={mainPage} setNoti={setNoti} setNotiMessage={setNotiMessage} post={postDetail} setPost={setPostDetail} logined={logined} userinfo={userinfo} />}
             {(page == 'Tạo tin mới') && <CreatePost setNoti={setNoti} setNotiMessage={setNotiMessage} cities={cities} districts={districts} wards={wards} setCities={setCities} setDistricts={setDistricts} setWards={setWards} />}
             {(page == 'Thông tin cá nhân') && <Profile setNoti={setNoti} setNotiMessage={setNotiMessage} cities={cities} districts={districts} wards={wards} setCities={setCities} setDistricts={setDistricts} setWards={setWards} />}
             {(page == 'Tin đã đăng' && <Listposted posts={posts} setPosts={setPosts} setPage={setPage} setPostDetail={setPostDetail} setPagearr={setPagearr} />)}
-            {(page == 'Chỉnh sửa bài đăng') && <UpdatePost setNoti={setNoti} setNotiMessage={setNotiMessage} post={postDetail} setPost={setPostDetail} cities={cities} districts={districts} wards={wards} setCities={setCities} setDistricts={setDistricts} setWards={setWards} />}
+            {(page == 'Chỉnh sửa bài đăng') && <UpdatePost setFrom={setFrom} setPage={setPage} setPagearr={setPagearr} setNoti={setNoti} setNotiMessage={setNotiMessage} post={postDetail} setPost={setPostDetail} cities={cities} districts={districts} wards={wards} setCities={setCities} setDistricts={setDistricts} setWards={setWards} />}
             {noti && <Toast showed={noti} message={notiMessage} setNoti={setNoti} />}
+            </div>
             <div>
                 {(page == 'list') && <Widget resizable={true} style={{ width: '200px', }}
                     handleNewUserMessage={handleNewUserMessage}

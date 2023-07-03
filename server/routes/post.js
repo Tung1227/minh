@@ -101,7 +101,7 @@ router.get("/allpost", async (req, res) => {
 router.post("/searchpost", async (req, res) => {
     try {
         let { city, district, ward, price, air_condition, washing, electric_price, water_price } = req.body
-        let posts
+        let posts = []
         console.log(req.body)
         if (price == '') {
             price = 0
@@ -116,7 +116,7 @@ router.post("/searchpost", async (req, res) => {
             console.log(water_price)
 
         }
-        if (ward) {
+        if (ward != '') {
             console.log('w', ward)
             posts = await prisma.$queryRaw`SELECT P.TITLE,
                 P.POST_ID,
@@ -133,7 +133,7 @@ router.post("/searchpost", async (req, res) => {
 	            and washing = ${washing}::boolean
                 order by diffPrice asc ,diffElect asc,diffwater asc `
         }
-        else if (district) {
+        else if (district != '') {
             console.log('d', district)
             posts = await prisma.$queryRaw`SELECT P.TITLE,
                 P.POST_ID,
@@ -149,7 +149,7 @@ router.post("/searchpost", async (req, res) => {
                 and air_condition = ${air_condition}::boolean
 	            and washing = ${washing}::boolean
                 order by diffPrice asc ,diffElect asc,diffwater asc `
-        } else if (city) {
+        } else if (city != '') {
             console.log('c', city)
             posts = await prisma.$queryRaw`SELECT P.TITLE,
                 P.POST_ID,
@@ -164,16 +164,37 @@ router.post("/searchpost", async (req, res) => {
                 city = ${city}::text
                 and air_condition = ${air_condition}::boolean
 	            and washing = ${washing}::boolean
-                order by diffPrice asc ,diffElect asc,diffwater asc `}
+                order by diffPrice asc ,diffElect asc,diffwater asc `
+        } else if (city == '') {
+            posts = await prisma.$queryRaw`SELECT P.TITLE,
+                P.POST_ID,
+                D.DISTRICT,
+                d.price,
+                d.image_file,
+                ABS(d.price::int-${price}::int) as diffPrice,
+                ABS(d.electric_price::int-${electric_price}::int) as diffElect,
+                ABS(d.water_price::int-${water_price}::int) as diffwater
+                FROM POST P
+                INNER JOIN DETAIL_POST D ON P.POST_ID = D.POST_ID where
+                air_condition = ${air_condition}::boolean
+	            and washing = ${washing}::boolean
+                order by diffPrice asc ,diffElect asc,diffwater asc `
+        }
 
 
-        posts.forEach(post => {
-            const img = post.image_file.split(',')
-            post.image_file = img
-        })
+        if (posts.length > 0) {
+            posts.forEach(post => {
+                const img = post.image_file.split(',')
+                post.image_file = img
+            })
+        }
 
-
-        return res.send({ posts });
+        if (posts.length > 0) {
+            return res.send({ posts });
+        }
+        else {
+            return res.send({ "message": "Không tìm thấy bài đăng phù hợp" });
+        }
     } catch (error) {
         console.log(error);
     }
@@ -268,18 +289,6 @@ router.post("/report", authorize, async (req, res) => {
         const { content, post_id } = req.body
         console.log('a-----', content, post_id)
         console.log('b-----', req.user)
-
-        // const post = await prisma.post.findFirst({
-        //     where: {
-        //         post_id: post_id
-        //     }
-        // })
-
-        // const accout = await prisma.account.findFirst({
-        //     where: {
-        //         user_id: req.user
-        //     }
-        // })
 
         const report = await prisma.report.create({
             data: {

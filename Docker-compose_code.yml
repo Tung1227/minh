@@ -26,6 +26,15 @@ services:
       - ./client:/app
     networks:
       - share_network
+  chatbot:
+    build:
+      dockerfile: Dockerfile
+      context: ./chatbot
+    container_name: chatbot
+    ports:
+      - 8000:8000
+    networks:
+      - share_network
 
 volumes:
   local_pgdata:

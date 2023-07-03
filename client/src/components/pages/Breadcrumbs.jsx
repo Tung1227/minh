@@ -9,9 +9,13 @@ export default function Breadcrumbs(props) {
       >
         <ol className="inline-flex items-center space-x-1 md:space-x-3">
           <li onClick={() => {
-            console.log(props.fromReport, 'report')
-            if (props.from != '') {
+            if (props.from != '' && props.from != 'list' && props.from != props.page && props.from != props.pagearr[0]) {
               props.setPage(props.from)
+              props.setPagearr([])
+              if (props.from == 'Tin đã đăng') {
+                props.setPagearr(['Tin đã đăng'])
+                props.setFrom('list')
+              }
             } else {
               props.setPage(props.mainPage)
               props.setPagearr([])

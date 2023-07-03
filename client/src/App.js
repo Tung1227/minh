@@ -22,20 +22,18 @@ function App() {
   return (
     <div className="App">
       <Router>
-          <Routes>
-            <Route path='' element={<Navigate to="/dashboard" />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/signup' element={<Signup />} />
-            <Route path='/dashboard' element={<Dashboard />} />
-            <Route path='/verify' element={<Verify />} />
-            <Route path='/createpost' element={<Listroom />} />
-            <Route path='/listpost' element={<Listpost />} />
-            <Route path='/repass' element={<RePass />} />
-            <Route path='/newpass' element={<NewPass />} />
-            <Route path='/inputmail' element={<InputMail />} />
-            <Route path='/detailpost' element={<ProductDetail />} />
-            <Route path='/admin' element={<MainPage />} />
-          </Routes>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<Signup />} />
+          <Route path='/verify' element={<Verify />} />
+          <Route path='/createpost' element={<Listroom />} />
+          <Route path='/repass' element={<RePass />} />
+          <Route path='/newpass' element={<NewPass />} />
+          <Route path='/inputmail' element={<InputMail />} />
+          <Route path='/detailpost' element={<ProductDetail />} />
+          <Route path='/admin' element={<MainPage />} />
+        </Routes>
       </Router>
       {/* <Link to="/login">Login</Link>
       <Link to="/Signup">Signup</Link> */}

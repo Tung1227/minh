@@ -27,7 +27,7 @@ export default function LoginPage() {
         window.location.href = '/admin'
       }
       else if (parseRes.account_type == 'user') {
-        window.location.href = '/dashboard'
+        window.location.href = "/"
 
       }
     }
@@ -86,7 +86,7 @@ export default function LoginPage() {
             href="#"
             className="flex justify-center items-center text-2xl font-medium text-gray-900 "
           >
-            <img src={logo} className="h-16 w-16 object-cover" alt="ảnh" />
+            <img src={logo} className="logo-login h-16 w-16 object-cover" alt="ảnh" />
           </a>
         </div>
         {/* end logo-form */}
@@ -132,30 +132,7 @@ export default function LoginPage() {
                 />
               </div>
               <div className="flex justify-between items-center text-gray-800  my-3">
-                <div className="flex">
-                  <div className="h-5">
-                    <input
-                      checked={saveToken}
-                      onChange={e => onChange(e)}
-                      name="saveToken"
-                      id="remember"
-                      type="checkbox"
-                      aria-describedby="remember"
-                      className="
-                                w-4 h-4
-                                 pointer-events-auto
-                                 cursor-pointer
-                                 outline-none
-                                 border border-gray-300 rounded
-                                  bg-gray-50 focus:ring-3 focus:ring-primary-300
-                                   dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600
-                                    dark:ring-offset-gray-800 checked:bg-primary-500"
-                    />
-                  </div>
-                  <div className="ml-3">
-                    <label htmlFor="remember">Lưu Thông Tin</label>
-                  </div>
-                </div>
+
                 <a href="/inputmail" className="text-blue-500">
                   Quên Mật Khẩu?
                 </a>

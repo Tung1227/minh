@@ -5,17 +5,17 @@ const prisma = require('../utils/db')
 router.post("/searchpost", async (req, res) => {
     try {
         let { price, air_condition, washing, electric_price, water_price, location } = req.body
-        console.log(req.body)
+        console.log(price, air_condition, washing, electric_price, water_price, location)
         let posts = []
-        if (price == 'undefined') {
+        if (price == undefined) {
             price = 0
             console.log(price)
         }
-        if (electric_price == 'undefined') {
+        if (electric_price == undefined) {
             electric_price = 0
             console.log(electric_price)
         }
-        if (water_price == 'undefined') {
+        if (water_price == undefined) {
             water_price = 0
             console.log(water_price)
         }
@@ -62,16 +62,17 @@ router.post("/searchpost", async (req, res) => {
         // parseRes.splice(0, 0, { code: '', name: 'Toàn quốc' });
         console.log(codesWard, codesDistrict, codesCity)
         if (codesCity != null) {
-            codes = codes.splice(0, 0, codesCity.code)
+            codes.push(codesCity.code)
 
         }
         if (codesDistrict != null) {
-            codes.splice(0, 0, codesDistrict.code)
+            codes.push(codesDistrict.code)
 
         }
         if (codesWard != null) {
-            codes.splice(0, 0, codesWard.code)
+            codes.push(codesDistrict.code)
         }
+        console.log(codes, 'code co gi')
         if (codes.length == 0) {
             const post = await prisma.$queryRaw`SELECT P.TITLE,
                             P.POST_ID,
@@ -94,7 +95,6 @@ router.post("/searchpost", async (req, res) => {
         }
         else {
             for (let j = 0; j < codes.length; j++) {
-
                 const post = await prisma.$queryRaw`SELECT P.TITLE,
                             P.POST_ID,
                             D.DISTRICT,
@@ -105,9 +105,9 @@ router.post("/searchpost", async (req, res) => {
                             ABS(d.water_price::int-${water_price}::int) as diffWater
                             FROM POST P
                             INNER JOIN DETAIL_POST D ON P.POST_ID = D.POST_ID WHERE
-                            city = ${codes[j]}::text
+                            (city = ${codes[j]}::text
                             or district = ${codes[j]}::text
-                            or ward = ${codes[j]}::text 
+                            or ward = ${codes[j]}::text )
                             and air_condition = ${air_condition}::boolean
                             and washing = ${washing}::boolean
                             order by diffPrice asc ,diffElect asc,diffWater asc `

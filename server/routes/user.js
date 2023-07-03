@@ -33,10 +33,15 @@ router.get("/info", authorization, async (req, res) => {
 
 router.get("/allpost", authorization, async (req, res) => {
     try {
+        console.log("posted")
         const posts = await prisma.post.findMany({
             where: {
-                user_id: req.user,
-                status: 'accepted'
+                AND: {
+                    OR:
+                        [{ status: 'updated', }, { status: 'accepted' }]
+                    ,
+                    user_id: req.user,
+                }
             },
             select: {
                 detail_post: {
@@ -50,11 +55,18 @@ router.get("/allpost", authorization, async (req, res) => {
             }
         })
         const result = posts.filter(post => post.detail_post.length != 0)
-        result.forEach(post => {
-            const img = post.detail_post[0].image_file.split(',')
-            post.detail_post[0].image_file = img
-        })
-        return res.send({ result });
+        if (result.length > 0) {
+            result.forEach(post => {
+                const img = post.detail_post[0].image_file.split(',')
+                post.detail_post[0].image_file = img
+            })
+        }
+
+        if (result.length > 0) {
+            return res.send({ result });
+        } else {
+            return res.send({ "message": "Không tìm thấy bài đăng phù hợp" });
+        }
     } catch (error) {
         console.log(error);
     }
@@ -131,12 +143,19 @@ router.post("/updatepost", authorization, async (req, res) => {
             data: {
                 title: title,
                 status: 'updated'
+            },
+            select:{
+                detail_post: {
+                    select:{
+                        id: true
+                    }
+                }
             }
         })
 
-        const postDetail = prisma.detail_post.update({
+        const postDetail = await prisma.detail_post.update({
             where: {
-                post_id: post_id
+                id: posts.detail_post[0].id,
             },
             data: {
                 title: title,
@@ -152,6 +171,8 @@ router.post("/updatepost", authorization, async (req, res) => {
                 ward: ward
             }
         })
+
+        console.log(postDetail,"updated")
 
         const user = await prisma.account.findFirst({
             where: {

@@ -15,7 +15,9 @@ export default function ListPost(props) {
 
     const parseRes = await respone.json()
     console.log(parseRes)
-    setPosts(parseRes.inacceptPost)
+    if (parseRes.inacceptPost) {
+      setPosts(parseRes.inacceptPost)
+    }
   }
 
   const getAllUpdatedPost = async () => {
@@ -27,7 +29,9 @@ export default function ListPost(props) {
 
     const parseRes = await respone.json()
     console.log(parseRes)
-    setPosts(parseRes.inacceptPost)
+    if (parseRes.inacceptPost) {
+      setPosts(parseRes.inacceptPost)
+    }
   }
 
   const getPost = async (post) => {
@@ -50,11 +54,10 @@ export default function ListPost(props) {
   }
   useEffect(() => {
     console.log(props.from, "from")
-    if (props.from == 'post') {
-      getAllPost()
-    }
-    else if (props.from == 'update') {
+    if (props.from == 'update') {
       getAllUpdatedPost()
+    } else {
+      getAllPost()
     }
   }, [props.from]);
 
@@ -71,8 +74,8 @@ export default function ListPost(props) {
         <thead>
           <tr>
             <th className="border border-slate-300 ...">STT</th>
-            <th className="border border-slate-300 ...">Title</th>
-            <th className="border border-slate-300 ...">Date</th>
+            <th className="border border-slate-300 ...">Tiều đề</th>
+            <th className="border border-slate-300 ...">Ngày tạo</th>
           </tr>
         </thead>
         <tbody>

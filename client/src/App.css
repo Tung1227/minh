@@ -43,10 +43,12 @@ input[type="file"] {
 }
 
 .custom-file-upload {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   border: 1px solid #ccc;
   display: inline-block;
   padding: 6px 12px;
   cursor: pointer;
+  border-radius: .7rem;
 }
 
 .warning {
@@ -65,3 +67,41 @@ input[type="file"] {
   width: 200px;
 }
 
+.rcw-launcher img {
+  width: -webkit-fill-available;
+  padding: 1rem;
+}
+
+.rcw-sender {
+  align-items: center !important;
+
+  .rcw-picker-btn,
+  .rcw-new-message {
+    margin-right: 10px;
+  }
+}
+
+.logo {
+  height: 100%;
+  width: 5rem !important;
+}
+
+.logo-login {
+  height: 100%;
+  width: 7rem !important;
+}
+
+.listButton {
+  margin: auto;
+  margin-left: 10px;
+}
+
+.avaterSelect {
+  margin: auto;
+  border-radius: 50%;
+  height: 5rem;
+  width: 5rem;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-top: 5px;
+}

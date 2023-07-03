@@ -23,7 +23,7 @@ const Verify = () => {
             console.log(parseRes)
             if(respone.status === 202){
                 localStorage.setItem('token', token)
-                window.location.href = '/dashboard'
+                window.location.href = "/"
             }
             
         } catch (error) {

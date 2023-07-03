@@ -41,7 +41,7 @@ export default function PostDetail(props) {
 
   return (
     <Fragment>
-      <ReportModal modal={modal} setModal={setModal} post_id={post.post_id} setNoti={props.setNoti} setNotiMessage={props.setNotiMessage} />
+      {<ReportModal modal={modal} setModal={setModal} post_id={post.post_id} setNoti={props.setNoti} setNotiMessage={props.setNotiMessage} />}
       <div className="container">
         <Carousel className="rounded-xl" style={{ borderColor: 'rgb(203 213 225)' }}>
           {post.detail_post[0].image_file.map((image, index) => (
@@ -92,7 +92,7 @@ export default function PostDetail(props) {
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
             </svg>}
           </div>
-          <h1 ><span className="font-bold ">Địa chỉ:</span> {address.districts[0].wards[0].name}, {address.districts[0].name}, {address.name}</h1>
+          <h1 ><span className="font-bold ">Địa chỉ:</span> {post.detail_post[0].address}, {address.districts[0].wards[0].name}, {address.districts[0].name}, {address.name}</h1>
         </div>
       </div>
     </Fragment>

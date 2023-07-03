@@ -86,7 +86,7 @@ export default function FillterModal(props) {
   }, [district])
   const onSubmitForm = async e => {
     const params = { ...inputs }
-    
+
     console.log(params)
     e.preventDefault()
     try {
@@ -97,15 +97,24 @@ export default function FillterModal(props) {
         body: JSON.stringify(params)
       })
       const parseRes = await respone.json()
-      console.log(parseRes)
-      parseRes.posts.map((post, index) => {
-        const detail_post = [{
-          price: post.price,
-          image_file: post.image_file
-        }]
-        parseRes.posts[index] = {...post, detail_post}
-      })
-      props.setPosts(parseRes.posts)
+
+      if (parseRes.message) {
+        props.setNoti('red')
+        props.setNotiMessage(parseRes.message)
+        setTimeout(() => {
+          props.setNoti('')
+        }, 3000);
+        props.setPosts([])
+      } else {
+        parseRes.posts.map((post, index) => {
+          const detail_post = [{
+            price: post.price,
+            image_file: post.image_file
+          }]
+          parseRes.posts[index] = { ...post, detail_post }
+        })
+        props.setPosts(parseRes.posts)
+      }
       props.setFillterModal(false)
     } catch (error) {
       console.log(error.message)
@@ -230,7 +239,6 @@ export default function FillterModal(props) {
                               value={air_condition}
                               onChange={(e) => { onChange(e) }}
                               type="checkbox"
-                              defaultValue=""
                               className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-600 dark:border-gray-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
                               required=""
                             />
@@ -250,7 +258,6 @@ export default function FillterModal(props) {
                               value={washing}
                               onChange={(e) => { onChange(e) }}
                               type="checkbox"
-                              defaultValue=""
                               className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-600 dark:border-gray-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
                               required=""
                             />
@@ -299,9 +306,9 @@ export default function FillterModal(props) {
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                    onClick={(e) => {onSubmitForm(e)}}
+                    onClick={(e) => { onSubmitForm(e) }}
                   >
-                    Search
+                    Tìm kiếm
                   </button>
                   <button
                     type="button"
@@ -309,7 +316,7 @@ export default function FillterModal(props) {
                     onClick={() => props.setFillterModal(false)}
                     ref={cancelButtonRef}
                   >
-                    Cancel
+                    Huỷ
                   </button>
                 </div>
               </Dialog.Panel>

@@ -12,7 +12,9 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json())
-app.use(cors());
+app.use(cors({
+    origin: "*",
+}));
 
 //ROUTE
 
@@ -20,7 +22,7 @@ app.use(cors());
 app.use("/auth", require("./routes/authenticator"));
 
 // dashboard 
-app.use("/dashboard", require("./routes/dashboard"));
+app.use("/", require("./routes/dashboard"));
 
 app.use("/post", require("./routes/post"));
 
@@ -29,7 +31,7 @@ app.use("/address", require("./routes/address"));
 app.use("/chatbot", require("./routes/chatbot"));
 app.use("/admin", require("./routes/admin"));
 
-app.use("/media",express.static("public"));
+app.use("/media", express.static("public"));
 
 app.listen(5000, () => {
 

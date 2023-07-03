@@ -181,7 +181,7 @@ export default function CreatePost(props) {
                     setTimeout(() => {
                         props.setNoti('')
                     }, 3000)
-                    window.location.href = '/dashboard'
+                    window.location.href = "/"
                 }
                 if (parseRes.error) {
                     props.setNoti('red')
@@ -189,7 +189,7 @@ export default function CreatePost(props) {
                     setTimeout(() => {
                         props.setNoti('')
                     }, 3000)
-                    // window.location.href ='/dashboard'
+                    // window.location.href ="/"
                 }
             }
         } catch (error) {
@@ -198,10 +198,9 @@ export default function CreatePost(props) {
     }
     return (
         <Fragment>
-            <div className="container">
-
+            <div className="container" style={{ minHeight: '836px' }}>
                 {/* <!-- component --> */}
-                <div className="min-h-screen p-6 bg-gray-100 flex items-center justify-center">
+                <div className="min-h-screen p-6 bg-gray-100 flex items-center justify-center" style={{ background: 'transparent' }}>
                     <div className="container max-w-screen-lg mx-auto">
                         <form onSubmit={onSubmitForm}>
                             <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
@@ -212,8 +211,8 @@ export default function CreatePost(props) {
                                             {selectedImage.files.length !== 0 && (
                                                 <div className="flex">
                                                     {selectedImage.files.map((img, index) => (
-                                                        <div>
-                                                            <img key={index} className="h-20 w-20"
+                                                        <div style={{ marginBottom: '1rem;' }}>
+                                                            <img key={index} className="h-20 w-20" style={{ borderRadius: '.7rem', padding: '.2rem' }}
                                                                 alt="not found"
                                                                 src={URL.createObjectURL(img)}
                                                             />
@@ -221,7 +220,7 @@ export default function CreatePost(props) {
                                                             <button key={img.name} value={img.name} onClick={(e) => {
                                                                 const arr = selectedImage.files.filter(img => img.name != e.currentTarget.value)
                                                                 setSelectedImage({ files: [...arr] })
-                                                            }}>Remove</button>
+                                                            }}>xoá ảnh</button>
                                                         </div>
                                                     ))}
 
@@ -345,7 +344,7 @@ export default function CreatePost(props) {
 
                                             <div className="md:col-span-5 text-right">
                                                 <div className="inline-flex items-end">
-                                                    <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+                                                    <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Tạo</button>
                                                 </div>
                                             </div>
 

@@ -65,7 +65,7 @@ export default function Signup() {
         window.location.href = '/admin'
       }
       else if (parseRes.account_type == 'user') {
-        window.location.href = '/dashboard'
+        window.location.href = "/"
 
       }
     }
@@ -84,7 +84,7 @@ export default function Signup() {
             href="#"
             className="flex justify-center items-center text-2xl font-medium text-gray-900"
           >
-            <img src={logo} className="h-16 w-16 object-cover" alt="ảnh" />
+            <img src={logo} className="logo-login h-16 w-16 object-cover" alt="ảnh" />
           </a>
         </div>
         {/* end logo-form */}

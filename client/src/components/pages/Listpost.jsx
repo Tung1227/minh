@@ -2,7 +2,7 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 import Pagination from "../pagination/Pagination";
 
 
-let PageSize = 3
+let PageSize = 12
 
 export default function Listpost(props) {
 
@@ -20,10 +20,11 @@ export default function Listpost(props) {
     // }, [currentPage]);
 
     useEffect(() => {
+        console.log(posts)
         const firstPageIndex = (currentPage - 1) * PageSize;
         const lastPageIndex = firstPageIndex + PageSize;
         setData(posts.slice(firstPageIndex, lastPageIndex))
-    }, [posts,currentPage])
+    }, [posts, currentPage])
 
     const getAllPost = async () => {
         const url = await `${process.env.REACT_APP_API_URL}/post/allpost`
@@ -33,7 +34,16 @@ export default function Listpost(props) {
         })
 
         const parseRes = await respone.json()
-        props.setPosts(parseRes.result)
+        if (parseRes.message) {
+            props.setNoti('red')
+            props.setNotiMessage(parseRes.message)
+            setTimeout(() => {
+                props.setNoti('')
+            }, 3000);
+            props.setPosts([])
+        } else {
+            props.setPosts(parseRes.result)
+        }
     }
 
     const getPost = async (post) => {
@@ -55,10 +65,14 @@ export default function Listpost(props) {
         }
     }
     useEffect(() => {
-        getAllPost()
+        console.log(props.from)
+        if (props.from != 'list') {
+            getAllPost()
+        }
     }, []);
 
     const onClick = (post) => {
+        props.setFrom('list')
         props.setPagearr(['Chi tiết'])
         getPost(post).then(() => {
             props.setPage('Chi tiết')
@@ -66,7 +80,8 @@ export default function Listpost(props) {
     }
     return (
         <Fragment>
-            <div className="bg-white text-center">
+            {data.length == 0 && <div style={{ minHeight: '836px' }}>Không tìm thấy tin phù hợp</div>}
+            {data.length != 0 && <div style={{ minHeight: '836px' }} className="bg-white text-center">
                 <div className="mx-auto max-w-2xl px-4 py-4 md:px-6 md:py-23 lg:max-w-7xl lg:px-8">
                     <h2 className="sr-only">Post</h2>
                     <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
@@ -87,14 +102,16 @@ export default function Listpost(props) {
                         ))}
                     </div>
                 </div>
+            </div>}
+            <div className="container pl-5">
+                {posts && <Pagination
+                    className="pagination-bar"
+                    currentPage={currentPage}
+                    totalCount={posts.length}
+                    pageSize={PageSize}
+                    onPageChange={page => setCurrentPage(page)}
+                />}
             </div>
-            <Pagination
-                className="pagination-bar"
-                currentPage={currentPage}
-                totalCount={posts.length}
-                pageSize={PageSize}
-                onPageChange={page => setCurrentPage(page)}
-            />
         </Fragment>
     )
 }

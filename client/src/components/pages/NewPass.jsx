@@ -138,7 +138,7 @@ export default function NewPass() {
                                 type="submit"
                                 className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 font-medium text-sm px-5 py-2.5 my-1 rounded"
                             >
-                                Thay đổi
+                                Tạo mới
                             </button>
                         </form>
                     </div>

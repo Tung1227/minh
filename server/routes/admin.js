@@ -32,7 +32,8 @@ router.get("/listreport", authorization, async (req, res) => {
             create_on: true,
             post: {
                 select: {
-                    title: true
+                    title: true,
+                    post_id: true
                 }
             }
         }
@@ -116,7 +117,7 @@ router.post("/rejectreport", authorization, async (req, res) => {
         }
     })
 
-    return res.status(202).send({ "message": "cập nhật thành công" });
+    return res.status(202).send({ "message": "Cập nhật thành công" });
 })
 
 router.post("/acceptpost", authorization, async (req, res) => {

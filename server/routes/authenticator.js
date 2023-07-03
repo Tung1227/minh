@@ -23,7 +23,7 @@ router.post("/register", validInfo, async (req, res) => {
         // console.log(user)
 
         if (user !== null) {
-            return res.status(401).send({ "message": "User already exist!!!" })
+            return res.status(401).send({ "message": "Người dùng đã tồn tại!!!" })
         }
 
         // 3. Bcrypt user password 
@@ -58,8 +58,8 @@ router.post("/register", validInfo, async (req, res) => {
         })
         const message = await `${process.env.BASE_URL}/verify?userId=${newUser.user_id}&token=${updateAccount.jwt_token}`;
         console.log(message)
-        sendEmail(newUser.user_email, "Verify Email", message);
-        res.send({ "message": "An Email sent to your account please verify" });
+        sendEmail(newUser.user_email, "Xác nhận Email", message);
+        res.send({ "message": "Email xác nhận đã được gửi đến mail của bạn. Hãy xác nhận email bằng link đính kèm" });
         // 5. generating out jwt token 
     } catch (error) {
         console.log(error)
@@ -82,15 +82,15 @@ router.post("/login", validInfo, async (req, res) => {
         })
         console.log(user)
         if (user === null) {
-            return res.status(401).json({ "message": "Email or Password is incorrect" })
+            return res.status(401).json({ "message": "Sai Email hoặc Password" })
         }
         if (user.is_verify == false) {
-            return res.status(401).json({ "message": "Please verify your email" })
+            return res.status(401).json({ "message": "Hãy xác nhận email của bạn" })
         }
         // 3. check if incoming password is the same the database password 
         const validPassword = await bcrypt.compare(password, user.user_password)
         if (!validPassword) {
-            return res.status(401).json({ "message": "Email or Password is incorrect" })
+            return res.status(401).json({ "message": "Sai Email hoặc Password" })
         }
 
         // 4. given them jwt token 
@@ -99,7 +99,7 @@ router.post("/login", validInfo, async (req, res) => {
         return res.json({ token })
     } catch (error) {
         console.log(error.message)
-        return res.status(500).send({ "message": "Server Error" })
+        return res.status(500).send({ "message": "Lỗi" })
     }
 })
 
@@ -125,7 +125,7 @@ router.get("/is-verify", authorization, async (req, res) => {
         return res.json(user)
     } catch (error) {
         console.log(error.message)
-        res.status(500).send({ "message": "Server Error" })
+        res.status(500).send({ "message": "Lỗi" })
     }
 })
 
@@ -133,8 +133,8 @@ router.post("/verify", async (req, res) => {
     try {
         const { user_id, jwt_token } = req.body
         const user = await prisma.account.findFirst({ where: { user_id: user_id } });
-        if (!user) return res.status(400).send({ "message": "Invalid link" });
-        if (user.jwt_token != jwt_token) return res.status(400).send({ "message": "Invalid link" });
+        if (!user) return res.status(400).send({ "message": "Link không hợp lệ" });
+        if (user.jwt_token != jwt_token) return res.status(400).send({ "message": "Link không hợp lệ" });
 
         await prisma.account.update({
             where: { user_id: user.user_id },
@@ -149,10 +149,10 @@ router.post("/verify", async (req, res) => {
                 avatar_img: 'Sample_User_Icon.png'
             }
         })
-        return res.status(202).send({ "message": "email verified sucessfully" });
+        return res.status(202).send({ "message": "Xác nhận email thành công" });
     } catch (error) {
         console.log(error.message)
-        return res.status(400).send({ "message": "An error occured" });
+        return res.status(400).send({ "message": "Lỗi" });
     }
 });
 

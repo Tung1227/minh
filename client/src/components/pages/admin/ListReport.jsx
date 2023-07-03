@@ -15,6 +15,7 @@ export default function ListReport(props) {
         })
 
         const parseRes = await respone.json()
+        console.log(parseRes)
         setReports(parseRes.inacceptReport)
     }
 
@@ -45,9 +46,9 @@ export default function ListReport(props) {
     }, [report]);
 
     const onClick = (post) => {
-        props.setPagearr(['detail'])
+        props.setPagearr(['Chi tiết'])
         getPost(post).then(() => {
-            props.setPage('detail')
+            props.setPage('Chi tiết')
         })
     }
 
@@ -60,6 +61,7 @@ export default function ListReport(props) {
                 body: JSON.stringify({ report_id: report_id })
             })
             const data = await respone.json().then(() => setReport(report_id))
+            console.log(data)
         } catch (error) {
             console.log(error.message)
         }
@@ -73,7 +75,7 @@ export default function ListReport(props) {
                 body: JSON.stringify({ report_id: report_id })
             })
             const data = await respone.json().then(() => setReport(report_id))
-
+            console.log(data)
         } catch (error) {
             console.log(error.message)
         }
@@ -84,16 +86,16 @@ export default function ListReport(props) {
                 <thead>
                     <tr>
                         <th className="border border-slate-300 ...">STT</th>
-                        <th className="border border-slate-300 ...">Title of post</th>
+                        <th className="border border-slate-300 ...">Tiêu đề</th>
                         <th className="border border-slate-300 ...">Nội dung báo cáo</th>
-                        <th className="border border-slate-300 ...">Date</th>
+                        <th className="border border-slate-300 ...">ngày tạo</th>
                     </tr>
                 </thead>
                 <tbody>
                     {reports.map((report, index) => (
                         <tr key={index}>
                             <td className="border border-slate-300 ...">{index}</td>
-                            <td className="border border-slate-300 ..." style={{ color: 'blue' }} onClick={() => { onClick(report.post_id) }}>{report.post.title}</td>
+                            <td className="border border-slate-300 ..." style={{ color: 'blue' }} onClick={() => { onClick(report.post.post_id) }}>{report.post.title}</td>
                             <td className="border border-slate-300 ...">{report.content}</td>
                             <td className="border border-slate-300 ...">{report.create_on}</td>
                             <td className="border border-slate-300 ..."><button type="" className="btn btn-primary" onClick={() => { acceptReport(report.report_id) }}>chấp nhận</button></td>

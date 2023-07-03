@@ -5,10 +5,12 @@ export default function UpdatePost(props) {
     console.log(props.post)
     const post = props.post
     useEffect(() => {
+        console.log(post.post.detail_post[0].address)
         setInputs({
             ...inputs, title: post.post.title, content: post.post.detail_post[0].content,
             price: post.post.detail_post[0].price, elect: post.post.detail_post[0].electric_price,
             water: post.post.detail_post[0].water_price, air_condition: post.post.detail_post[0].air_condition,
+            address: post.post.detail_post[0].address,
             washing: post.post.detail_post[0].washing, city: post.address.code, district: post.address.districts[0].code,
             ward: post.address.districts[0].wards[0].code
         })
@@ -116,6 +118,9 @@ export default function UpdatePost(props) {
                     setTimeout(() => {
                         props.setNoti('')
                     }, 3000)
+                    props.setPage('Tin đã đăng')
+                    props.setPagearr(['Tin đã đăng'])
+
                 }
             }
         } catch (error) {
@@ -138,7 +143,7 @@ export default function UpdatePost(props) {
             <div className="container">
 
                 {/* <!-- component --> */}
-                <div className="min-h-screen p-6 bg-gray-100 flex items-center justify-center">
+                <div className="min-h-screen p-6 bg-gray-100 flex items-center justify-center" style={{ background: 'transparent' }}>
                     <div className="container max-w-screen-lg mx-auto">
                         <form onSubmit={onSubmitForm}>
                             <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
@@ -252,7 +257,7 @@ export default function UpdatePost(props) {
 
                                             <div className="md:col-span-5 text-right">
                                                 <div className="inline-flex items-end">
-                                                    <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+                                                    <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Cập nhật</button>
                                                 </div>
                                             </div>
 

@@ -174,7 +174,7 @@ export default function Profile(props) {
                     setTimeout(() => {
                         props.setNoti('')
                     }, 3000)
-                    window.location.href = '/dashboard'
+                    window.location.href = "/"
                 }
                 if (parseRes.error) {
                     props.setNoti('red')
@@ -182,7 +182,7 @@ export default function Profile(props) {
                     setTimeout(() => {
                         props.setNoti('')
                     }, 3000)
-                    // window.location.href ='/dashboard'
+                    // window.location.href ="/"
                 }
             }
         } catch (error) {
@@ -195,7 +195,7 @@ export default function Profile(props) {
             <div className="container">
 
                 {/* <!-- component --> */}
-                <div className="min-h-screen p-6 bg-gray-100 flex items-center justify-center">
+                <div className="min-h-screen p-6 bg-gray-100 flex items-center justify-center" style={{ background: 'transparent' }}>
                     <div className="container max-w-screen-lg mx-auto">
                         <form onSubmit={onSubmitForm}>
                             <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
@@ -207,7 +207,7 @@ export default function Profile(props) {
                                                 <div className="text-center">
                                                     {selectedImage.files.map((img, index) => (
                                                         <div>
-                                                            <img key={index} className="h-20 w-20" style={{ marginLeft: '100px' }}
+                                                            <img key={index} className="avaterSelect h-20 w-20" style={{ margin: 'auto', borderRadius: '0.7rem' }}
                                                                 alt="not found"
                                                                 src={URL.createObjectURL(img)}
                                                             />
@@ -217,8 +217,8 @@ export default function Profile(props) {
 
                                                 </div>
                                             )}
-                                            {imgUrl != '' && selectedImage.files.length == 0 && <div className="text-center">
-                                                <img className="h-20 w-20" style={{ marginLeft: '100px' }}
+                                            {imgUrl != '' && selectedImage.files.length == 0 && <div className="avaterSelect text-center">
+                                                <img className="h-20 w-20" style={{ margin: 'auto', borderRadius: '0.7rem' }}
                                                     alt="not found"
                                                     src={imgUrl}
                                                 />
@@ -287,7 +287,7 @@ export default function Profile(props) {
 
                                             <div className="md:col-span-5 text-right">
                                                 <div className="inline-flex items-end">
-                                                    <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+                                                    <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Cập nhật</button>
                                                 </div>
                                             </div>
 

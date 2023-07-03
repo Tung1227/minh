@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 
 
 const navigation = [
-  { name: "Dashboard", href: "/dashboard", current: true },
+  { name: "Danh sách bài đăng", href: "/", current: true },
 ];
 
 function classNames(...classes) {
@@ -73,13 +73,13 @@ export default function NavBar(props) {
                     src={logo}
                     alt="Your Company"
                   />
-                  <img
-                    className="hidden h-8 w-auto lg:block"
+                  <img 
+                    className="logo hidden h-8 w-auto lg:block"
                     src={logo}
                     alt="Your Company"
                   />
                 </div>
-                <div className="hidden sm:ml-6 sm:block">
+                {(userInfo == undefined || userInfo.account_type != 'admin' ) && <div className="listButton hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <a
@@ -97,7 +97,7 @@ export default function NavBar(props) {
                       </a>
                     ))}
                   </div>
-                </div>
+                </div>}
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <button
@@ -135,7 +135,7 @@ export default function NavBar(props) {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
+                      {(props.user.account_type != 'admin') && <Menu.Item>
                         {({ active }) => (
                           <a onClick={(e) => {
                             Profile(e)
@@ -148,8 +148,8 @@ export default function NavBar(props) {
                             Thông tin cá nhân
                           </a>
                         )}
-                      </Menu.Item>
-                      <Menu.Item>
+                      </Menu.Item>}
+                      {((props.user.account_type != 'admin')) && <Menu.Item>
                         {({ active }) => (
                           <a onClick={(e) => {
                             listpost(e)
@@ -162,7 +162,7 @@ export default function NavBar(props) {
                             Tin đã đăng
                           </a>
                         )}
-                      </Menu.Item>
+                      </Menu.Item>}
                       <Menu.Item>
                         {({ active }) => (
                           <a onClick={(e) => changePass(e)}
@@ -184,7 +184,7 @@ export default function NavBar(props) {
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            Sign out
+                            Đăng xuất
                           </a>
                         )}
                       </Menu.Item>
@@ -192,9 +192,9 @@ export default function NavBar(props) {
                   </Transition>
                 </Menu>}
                 {!logined && <button onClick={() => { window.location.href = '/login' }}
-                  type="button" className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 relative ml-3">Login</button>}
-                {logined && <button onClick={() => { changePage() }}
-                  type="button" className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 relative ml-3">Tạo tin mới</button>}
+                  type="button" className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 relative ml-3">Đăng nhập</button>}
+                {logined && user.account_type != 'admin' && <button onClick={() => { changePage() }}
+                  type="button" className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 relative ml-3">Tạo tin mới</button>}
               </div>
             </div>
           </div>
